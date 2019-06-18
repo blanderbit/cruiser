@@ -1,0 +1,41 @@
+#footer {
+    background: #ECF0F3;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 44px 0;
+}
+.menu-navigations{
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #32405B;
+    display: flex;
+}
+.footer-container{
+    display: flex;
+    align-items: center;
+}
+.menu-navigations div{
+    margin-right: 20px;
+}
+.cruiser-name{
+    margin-right: 120px;
+}
+.menu-navigations{
+    margin-right: 150px;
+}
+.all-right{
+    color: #32405B;
+    display: flex;
+    align-items: center;
+}
+.right-middle{
+    width: 1px;
+    height: 27px;
+    background: #CA4635;
+}
+.all-right div:first-child, .right-middle{
+    margin-right: 30px;
+}

@@ -1,0 +1,13 @@
+<div class="card">
+    <div class="card-image"></div>
+    <div class="card-description">{{item.description}}</div>
+    <div class="card-star">
+        <app-star :count="item.starCount"></app-star>
+    </div>
+    <hr class="card-line">
+    <div class="card-price">
+        <span>$</span>{{item.price}}
+    </div>
+    <button class="button-card-add all-center">add to card</button>
+</div>
+

@@ -1,0 +1,41 @@
+
+<div id="header" :style="{paddingBottom: isMenu ?  0: '22px'}">
+    <div class="header-container">
+         <div class="header-menu all-center" @click="isMenu = !isMenu">
+              <div class="container-menu">
+                  <div></div>
+                  <div></div>
+                  <div></div>
+              </div>
+         </div>
+         <div class="cruiser-name">
+             <span>Cruiser</span><span>Addiction</span>
+         </div>
+         <div class="search">
+             <div class="info all-center">i</div>
+             <div class="info-middle"></div>
+             <input type="search" placeholder="Search by Part Number">
+         </div>
+         <div class="multi-currency">
+             <div class="currency">ENG</div>
+             <div class="multi-currency-middle"></div>
+             <div class="currency">USD</div>
+         </div>
+        <div class="menu-other basket-menu">
+            <div class="badge all-center">{{count}}</div>
+        </div>
+        <div class="menu-other profile-menu"></div>
+    </div>
+    <div class="menu-page" v-if="isMenu">
+        <div class="menu-page-container">
+            <router-link
+                class="link"
+                v-for="item in menu_page"
+                :to="item"
+                :key="item">
+                {{item}}
+            </router-link>
+        </div>
+    </div>
+</div>
+

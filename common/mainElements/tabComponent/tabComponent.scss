@@ -1,0 +1,26 @@
+.tab-component {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+.tab-component li{
+    padding: 28px 13px;
+    width: 187px;
+    border-right: 1px solid #ECF0F3;
+    border-bottom: 3px solid white;
+    cursor: pointer;
+    list-style: none;
+    word-wrap: break-word;
+}
+.tab-component li:last-child{
+    border-right: none;
+}
+.tab-component li:hover, .tab-component li.active-tab{
+    font-weight: bold;
+    color: #CA4635;
+    border-bottom: 3px solid #CA4635;
+}

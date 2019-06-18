@@ -1,0 +1,13 @@
+.star {
+    display: flex;
+}
+.star div {
+    width: 12px;
+    height: 12px;
+    background-image: url("../../../assets/full-star.png");
+    background-repeat: no-repeat;
+    background-position: 45% 45%;
+}
+.star div.empty {
+    background-image: url("../../../assets/empty-star.png");
+}

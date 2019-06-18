@@ -1,53 +1,172 @@
 <template>
-  <div>
-    <nuxt/>
-  </div>
+    <div>
+        <app-header></app-header>
+        <main>
+            <nuxt/>
+        </main>
+        <app-footer></app-footer>
+    </div>
 </template>
 
+<script>
+    import header from '../common/mainElements/header/index'
+    import footer from '../common/mainElements/footer/index'
+
+    export default {
+        components: {
+            "app-header": header,
+            "app-footer": footer,
+        }
+    }
+</script>
+
 <style>
-html {
-  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  font-size: 16px;
-  word-spacing: 1px;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
-}
+    body, html {
+        margin: 0;
+        font-family: Montserrat;
+        padding: 0;
+    }
 
-*, *:before, *:after {
-  box-sizing: border-box;
-  margin: 0;
-}
+    .Carousel-section .carousel__item .container-slide {
+        height: 600px;
+        width: 1100px;
+    }
 
-.button--green {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
-  text-decoration: none;
-  padding: 10px 30px;
-}
+    .Carousel-section .carousel__item .container-slide .about-customer-container {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+    }
 
-.button--green:hover {
-  color: #fff;
-  background-color: #3b8070;
-}
+    .Carousel-section .carousel__item .container-slide .about-customer-container .about-customer-content {
+        width: 646px;
+        height: 67px;
+        margin-top: 60px;
+        padding: 20px;
+        background: #32405B;
+        box-shadow: 9.2px 9.2px 21px rgba(0, 0, 0, 0.15);
+        display: flex;
+    }
 
-.button--grey {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
+    .Carousel-section .carousel__item .container-slide .about-customer-container .about-customer-content .description-about {
+        font-family: Montserrat;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        /*line-height: 0px;*/
+        /*margin-bottom: 5px;*/
+        color: #FFFFFF;
+    }
 
-.button--grey:hover {
-  color: #fff;
-  background-color: #35495e;
-}
+    .Carousel-section .carousel__item .container-slide .about-customer-container .about-customer-content .description-about .name {
+        margin-bottom: 5px;
+    }
+
+    .Carousel-section .carousel__item .container-slide .about-customer-container .about-customer-content .description-about .description {
+        margin-top: 5px;
+        font-size: 12px;
+        width: 521px;
+        /*line-height: 16px;*/
+        color: #D7DBE6;
+    }
+
+    .Carousel-section .carousel__item .container-slide .about-customer-container .about-customer-content .about-photo {
+        height: 67px;
+        width: 70px;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+        background-image: url("./../assets/caruselIcon/image.png");
+    }
+
+    .Carousel-section .carousel__item .container-slide .about-customer-container .about-customer-content .middle-about {
+        width: 1px;
+        height: 100%;
+        background: white;
+        margin: 0 20px;
+    }
+
+    .Carousel-section .carousel__item .container-slide .customer-map-container {
+        display: flex;
+        width: 100%;
+        align-items: stretch;
+    }
+
+    .Carousel-section .carousel__item .container-slide .customer-map-container .map {
+        width: 600px;
+        height: 400px;
+        background-repeat: no-repeat;
+        background-size: contain;
+        align-self: flex-end;
+        background-image: url("./../assets/caruselIcon/MAP.png");
+    }
+
+    .Carousel-section .carousel__item .container-slide .customer-map-container .customer {
+        position: relative;
+        display: flex;
+        width: 400px;
+    }
+
+    .Carousel-section .carousel__item .container-slide .customer-map-container .customer .title {
+        font-family: Montserrat;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 36px;
+        color: #32405B;
+        margin-left: 20px;
+    }
+
+    .Carousel-section .carousel__item .container-slide .customer-map-container .customer .customer-logo {
+        width: 53px;
+        height: 171px;
+        border-radius: 35px;
+        background: #ECF0F3;
+        display: flex;
+        margin-left: 80px;
+        justify-content: center;
+    }
+
+    .Carousel-section .carousel__item .container-slide .customer-map-container .customer .customer-car {
+        width: 800px;
+        height: 400px;
+        left: -70px;
+        top: 80px;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+        position: absolute;
+        background-image: url("./../assets/caruselIcon/car.png");
+    }
+
+    .Carousel-section .carousel__item .container-slide .customer-map-container .customer .customer-logo .customer-logo-small {
+        background: #CA4635;
+        width: 20px;
+        height: 20px;
+        margin-top: 15px;
+        border-radius: 50%;
+    }
+
+
+    .all-center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .cruiser-name {
+        font-size: 24px;
+        line-height: 0px;
+        margin-right: 40px;
+        font-style: normal;
+        font-weight: bold;
+    }
+
+    .cruiser-name span {
+        color: #32405a
+    }
+
+    .cruiser-name span:first-child {
+        color: #CA4635;
+    }
 </style>
 
