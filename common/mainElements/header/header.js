@@ -1,7 +1,10 @@
+import basket from './../basket/index'
 export default {
     name: 'app-header',
-    components: {},
-    props: [],
+    components: {
+        basket:basket
+    },
+    props: ['isBasketOpen'],
     data() {
         return {
             menu_page: [
@@ -26,10 +29,15 @@ export default {
 
         }
     },
-    mounted() {
-
+    created(){
     },
     methods: {
-
+        toggleBasket(flag) {
+            if(flag && this.isBasketOpen) {
+                this.$emit('getActiveBasket', !this.isBasketOpen)
+            }
+            if(flag) return
+            this.$emit('getActiveBasket', !this.isBasketOpen)
+        }
     }
 }

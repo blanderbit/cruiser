@@ -1,10 +1,19 @@
 <template>
     <div>
-        <app-header></app-header>
-        <main>
+        <div class="basket-background"
+             v-if="isBasketOpen"
+             @click="isBasketOpen ? isBasketOpen = !isBasketOpen : null">
+        </div>
+        <app-header
+            @getActiveBasket="getActiveBasket($event)"
+            :isBasketOpen="isBasketOpen">
+        </app-header>
+
+        <main @click="isBasketOpen ? isBasketOpen = !isBasketOpen : null">
             <nuxt/>
         </main>
-        <app-footer></app-footer>
+        <app-footer>
+        </app-footer>
     </div>
 </template>
 
@@ -16,11 +25,31 @@
         components: {
             "app-header": header,
             "app-footer": footer,
+        },
+        data(){
+            return{
+                isBasketOpen:false
+            }
+        },
+        methods: {
+            getActiveBasket(event){
+                this.isBasketOpen = event
+            }
         }
     }
 </script>
 
 <style>
+
+    .basket-background{
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        background: white;
+        opacity: 0.4;
+        z-index: 10;
+    }
+
     body, html {
         margin: 0;
         font-family: Montserrat;
@@ -167,6 +196,9 @@
 
     .cruiser-name span:first-child {
         color: #CA4635;
+    }
+    .pointer{
+        cursor: pointer;
     }
 </style>
 

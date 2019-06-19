@@ -128,6 +128,7 @@ input[type=search]::placeholder {
 .basket-menu {
     background-image: url("./../../../assets/cart-basket.png");
     margin-right: 20px;
+    position: relative;
 }
 
 .basket-menu .badge {

@@ -61,12 +61,12 @@
         data(){
             return{
                 tabCards: [
-                    'SALES  PRODUCTS',
-                    'BEST SELLING  PRODUCTS',
-                    'TOP  RATED ',
-                    'MOST VIEWED  PRODUCTS',
-                    'RECENT  PRODUCTS',
-                    'FEATURED  PRODUCTS'
+                    'sales products',
+                    'best selling products',
+                    'top rated',
+                    'most viewed products',
+                    'recent products',
+                    'feature products'
                 ],
                 tabAbout:[
                     'Easy to USE',
