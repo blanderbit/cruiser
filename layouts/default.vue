@@ -40,14 +40,16 @@
 </script>
 
 <style>
-
+    main{
+        min-height: calc(100vh - 224px);
+    }
     .basket-background{
         width: 100%;
         height: 100%;
         position: fixed;
         background: white;
         opacity: 0.4;
-        z-index: 10;
+        z-index: 11;
     }
 
     body, html {
@@ -199,6 +201,19 @@
     }
     .pointer{
         cursor: pointer;
+    }
+    .square {
+        width: 32px;
+        height: 32px;
+        position: absolute;
+        bottom: -32px;
+        right: -32px;
+        background-color: #91A0BC;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+    .back-arrow {
+        background-image: url("./../assets/back-arrow.png");
     }
 </style>
 
