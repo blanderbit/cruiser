@@ -14,7 +14,11 @@
          <div class="search" >
              <div class="info all-center">i</div>
              <div class="info-middle"></div>
-             <input type="search" placeholder="Search by Part Number">
+             <input type="search"
+                    v-model="searchText"
+                    @keypress.enter="changeValueSearch($event)"
+                    @change="changeValueSearch($event)"
+                    placeholder="Search by Part Number">
          </div>
          <div class="multi-currency" >
              <div class="currency">ENG</div>
@@ -22,7 +26,7 @@
              <div class="currency">USD</div>
          </div>
         <div class="menu-other basket-menu pointer" @click.self="toggleBasket()">
-            <div class="badge all-center">1</div>
+            <div class="badge all-center">{{count}}</div>
             <basket v-if="isBasketOpen"></basket>
         </div>
         <div class="menu-other profile-menu"></div>

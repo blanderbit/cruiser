@@ -1,0 +1,12 @@
+<div>
+    <ul class="tab-component">
+        <li v-for="(item, index) in tabs"
+            :style="width ? {width: `${width}px` }: ''"
+            :class="{'active-tab':index == active}"
+            @click="activeTab(index)">
+            {{item}}
+        </li>
+    </ul>
+    <div class="upBackground"></div>
+</div>
+

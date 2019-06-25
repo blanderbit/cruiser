@@ -23,9 +23,6 @@ module.exports = {
                     'https://fonts.googleapis.com/css?family=Montserrat:400, 500,600,800'
             },
         ],
-        script:[
-            {src: '~plugins/vue-carousel.js', ssr: false}
-        ]
     },
     /*
     ** Customize the progress bar color
@@ -36,7 +33,9 @@ module.exports = {
     */
     plugins: [
         { src: './plugins/carousel', ssr: false },
-        { src: './plugins/star'}
+        { src: './plugins/star'},
+        { src: './plugins/vue-resource'},
+        { src: './plugins/vuetify'}
     ],
     build: {
         /*

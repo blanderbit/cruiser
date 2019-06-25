@@ -13,7 +13,9 @@
     "precommit": "npm run lint"
   },
   "dependencies": {
-    "nuxt": "^2.0.0"
+    "nuxt": "^2.0.0",
+    "vue-resource": "^1.5.1",
+    "vuetify": "^1.5.16"
   },
   "devDependencies": {
     "@chenfengyuan/vue-carousel": "^1.0.2",

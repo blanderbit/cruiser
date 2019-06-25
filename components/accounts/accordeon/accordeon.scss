@@ -1,0 +1,38 @@
+.tab-component {
+    margin: 0;
+    padding: 0;
+    margin-top: 33px;
+}
+.tab-component li{
+
+    width: 100%;
+margin-bottom: 15px;
+    list-style: none;
+}
+.close{
+    padding: 16px 12px;
+    box-sizing: border-box;
+    background: #D4D7DE;
+    display: flex;
+    justify-content: space-between;
+}
+.close.true{
+    background: #ECF0F3;
+}
+.active{
+    max-height: 0;
+    height: 0;
+    overflow-y: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    transition: 1s all;
+}
+
+.active.true{
+    max-height: 1000px;
+    height: auto;
+    overflow-y: auto;
+}
+.total-accord{
+    display: flex;
+}

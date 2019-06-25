@@ -5,33 +5,35 @@
         <div>QUANTITY</div>
         <div>Delete</div>
     </div>
-    <div class="item-shop-basket">
-        <div class="item-shop-basket-picture"></div>
-        <div class="item-shop-basket-name">
-            <div class="item-shop-basket-name-title">
-                Brand:
-                <span class="item-shop-basket-name-description-in-title">TOYOTA</span>
+    <div class="basket-container-products">
+        <div class="item-shop-basket" v-for="item in data">
+            <div class="item-shop-basket-picture"></div>
+            <div class="item-shop-basket-name">
+                <div class="item-shop-basket-name-title">
+                    Brand:
+                    <span class="item-shop-basket-name-description-in-title">{{item.brand_name}}</span>
+                </div>
+                <div class="item-shop-basket-name-description">
+                    {{item.description_english}}
+                </div>
+                <div class="item-shop-basket-name-title">
+                    Part number
+                    <span class="item-shop-basket-name-description-in-title">{{item.part_number}}</span>
+                </div>
             </div>
-            <div class="item-shop-basket-name-description">
-                NEW OEM TOYOTA LAND CRUISER 80 SERIES OR LEXUS LX450 AIR CLEANER
+            <div class="item-shop-basket-quantity">
+                <div class="item-shop-basket-quantity-count">
+                    <div class="all-center item-shop-basket-count pointer">+</div>
+                    <div  class="quantity">{{item.basket && item.basket.qty}}</div>
+                    <div class="all-center item-shop-basket-count pointer">-</div>
+                </div>
+                <div class="item-shop-basket-count-total">
+                    ${{item.basket && item.basket.prices}}
+                </div>
             </div>
-            <div class="item-shop-basket-name-title">
-                Part number
-                <span class="item-shop-basket-name-description-in-title">1626210011</span>
+            <div class="item-shop-basket-delete all-center">
+                <div class="icon-delete pointer"></div>
             </div>
-        </div>
-        <div class="item-shop-basket-quantity">
-            <div class="item-shop-basket-quantity-count">
-                <div class="all-center item-shop-basket-count pointer">+</div>
-                <div  class="quantity">1</div>
-                <div class="all-center item-shop-basket-count pointer">-</div>
-            </div>
-            <div class="item-shop-basket-count-total">
-                $89.10
-            </div>
-        </div>
-        <div class="item-shop-basket-delete all-center">
-            <div class="icon-delete pointer"></div>
         </div>
     </div>
     <div class="basket-footer-container">
@@ -42,7 +44,7 @@
             </div>
             <div class="basket-total">
                 <div class="total-text">TOTAL:</div>
-                <div class="total-count">197.90</div>
+                <div class="total-count">{{total}}</div>
             </div>
         </div>
     </div>

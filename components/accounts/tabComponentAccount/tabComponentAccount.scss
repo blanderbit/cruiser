@@ -1,0 +1,34 @@
+.tab-component {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+.tab-component li{
+    padding: 21px 13px;
+    background: #D4D7DE;
+    border-right: 1px solid #ECF0F3;
+    border-top: 3px solid #D4D7DE;
+    cursor: pointer;
+    list-style: none;
+    word-wrap: break-word;
+}
+.tab-component li:last-child{
+    border-right: none;
+}
+.tab-component li:hover, .tab-component li.active-tab{
+    font-weight: bold;
+    font-size: 14px;
+    color: #CA4635;
+    background: #ECF0F3;
+    letter-spacing: -0.07px;
+    border-top: 3px solid #CA4635;
+}
+.upBackground{
+    height: 5px;
+    width:100%;
+    background: #ECF0F3;
+}

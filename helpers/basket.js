@@ -1,11 +1,18 @@
 export class Basket {
     static addThing(item){
+        let all_data = this.getAllThing('basket-data');
+        if(!all_data)  all_data = [];
+        all_data.push(item);
         return localStorage.setItem(
             'basket-data',
-            JSON.stringify(JSON.parse(this.getAllThing('basket-data')).push(item))
+            JSON.stringify(all_data)
         )
     }
     static getAllThing(){
-        return JSON.parse(localStorage.getItem('basket-data'))
+        try {
+            return JSON.parse(localStorage.getItem('basket-data'))
+        } catch (e){
+            return []
+        }
     }
 }

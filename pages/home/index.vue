@@ -144,7 +144,7 @@
     }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
     .tab{
         display: flex;
         justify-content: center;

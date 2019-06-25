@@ -19,22 +19,27 @@
                         <app-table :type="'header'"></app-table>
                     </div>
                     <div class="result-table-header result-table-main-result">
-                        <app-table style="margin-bottom: 32px"></app-table>
+                        <app-table
+                             tyle="margin-bottom: 32px"
+                             v-for="(item, index) in data"
+                             :key="item.part_number + index"
+                             :item="item">
+                        </app-table>
                     </div>
-                    <div class="result-table-result-superseded">
-                        <div class="search-result-title search-result-title-number title">SUPERSEDED</div>
-                        <app-table :background="'#FBEEE6'" style="margin-bottom: 15px"></app-table>
-                        <app-table :background="'#FBEEE6'" style="margin-bottom: 15px"></app-table>
-                        <app-table :background="'#FBEEE6'"></app-table>
-                    </div>
+                    <!--<div class="result-table-result-superseded">-->
+                        <!--<div class="search-result-title search-result-title-number title">SUPERSEDED</div>-->
+                        <!--<app-table :background="'#FBEEE6'" style="margin-bottom: 15px"></app-table>-->
+                        <!--<app-table :background="'#FBEEE6'" style="margin-bottom: 15px"></app-table>-->
+                        <!--<app-table :background="'#FBEEE6'"></app-table>-->
+                    <!--</div>-->
                 </div>
-                <div class="result-aftermarket">
-                    <div class="search-result-title search-result-title-number title">Aftermarket</div>
-                    <app-table :background="'#EAECEE'" style="margin-bottom: 15px"></app-table>
-                    <app-table :background="'#DDEBF6'" style="margin-bottom: 15px"></app-table>
-                    <app-table :background="'#EAECEE'" style="margin-bottom: 15px"></app-table>
-                    <app-table :background="'#DDEBF6'"></app-table>
-                </div>
+                <!--<div class="result-aftermarket">-->
+                    <!--<div class="search-result-title search-result-title-number title">Aftermarket</div>-->
+                    <!--<app-table :background="'#EAECEE'" style="margin-bottom: 15px"></app-table>-->
+                    <!--<app-table :background="'#DDEBF6'" style="margin-bottom: 15px"></app-table>-->
+                    <!--<app-table :background="'#EAECEE'" style="margin-bottom: 15px"></app-table>-->
+                    <!--<app-table :background="'#DDEBF6'"></app-table>-->
+                <!--</div>-->
             </div>
             <div class="leave-message">
                 <div class="picture-leave-message">
@@ -52,8 +57,12 @@
     import leftAside from "../../common/mainElements/leftAside";
     import rightAside from "../../common/mainElements/rightAside";
     import table from "../../common/mainElements/table";
-
+    import {mapGetters} from "vuex"
     export default {
+        // async fetch({store}){
+        //     let {data} = await store.dispatch('search/action_get_search')
+        //     console.log('data',data)
+        // },
         components: {
             'app-left-aside': leftAside,
             'app-right-aside': rightAside,
@@ -62,6 +71,19 @@
         data(){
             return {
                 simple: false
+            }
+        },
+        computed:{
+            ...mapGetters({
+                data:'search/get_search_result'
+            })
+        },
+        mounted(){
+            this.search()
+        },
+        methods:{
+             search(){
+                 this.$store.dispatch('search/action_get_search')
             }
         }
     }
@@ -76,8 +98,8 @@
     }
 
     .search-container {
-        max-width: 1180px;
-        width: 1180px;
+        max-width: 1175px;
+        width: 1175px;
     }
 
     .search-result-title {
@@ -85,7 +107,7 @@
         font-size: 20px;
         letter-spacing: -0.1px;
         color: #32405B;
-        margin: 0 20px;
+        margin: 0 30px;
         margin-bottom: 25px;
     }
 
@@ -94,7 +116,7 @@
     }
 
     .select-result-simple {
-        margin: 0 20px;
+        margin: 0 30px;
     }
 
     .styled-input-single {
@@ -217,8 +239,9 @@
 
     .container-result {
         /*position: relative;*/
-        width: 100%;
-        padding-top: 30px;
+        /*width: 100%*/
+        padding-top: 30px;margin: 0 20px;
+
     }
 
     .result-background {
@@ -272,7 +295,7 @@
     }
     .leave-message {
         display: flex;
-        margin: 0 20px;
+        margin: 0 40px;
         cursor: pointer;
     }
     .picture-leave-message{

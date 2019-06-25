@@ -1,0 +1,18 @@
+
+<ul class="tab-component">
+    <li v-for="(item, index) in items"
+        @click="activeTab(index)">
+        <div class="close" :class="item.active ? 'true' : ''">
+            <div>Feb 14, 2019 Order: 0124</div>
+            <div class="total-accord">
+                <div>Total:  $390.25</div>
+                <div>Status: <span>SHIPPED</span></div>
+            </div>
+        </div>
+        <div class="active" :class="item.active ? 'true' : ''">
+            <div>Information about order:</div>
+            <div>Order List:</div>
+        </div>
+    </li>
+</ul>
+
