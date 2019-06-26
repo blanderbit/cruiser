@@ -4,7 +4,7 @@
         <div class="search-container">
             <div class="search-result-title">
                 Search result for:
-                <span class="search-result-title-number">1626210011, 1626210033, 1626210044</span>
+                <span class="search-result-title-number">{{text}}</span>
             </div>
             <div class="select-result-simple">
                 <div class="styled-input-single d-flex align-items-center">
@@ -41,12 +41,6 @@
                     <!--<app-table :background="'#DDEBF6'"></app-table>-->
                 <!--</div>-->
             </div>
-            <div class="leave-message">
-                <div class="picture-leave-message">
-                    <div style="background: #CA4635"></div>
-                </div>
-                <div class="text-leave-message all-center">Leave a message</div>
-            </div>
         </div>
         <app-right-aside style="align-self: flex-start;margin-top: 400px"></app-right-aside>
     </div>
@@ -75,16 +69,22 @@
         },
         computed:{
             ...mapGetters({
-                data:'search/get_search_result'
+                data:'search/get_search_result',
+                text:'search/get_search_text'
             })
         },
         mounted(){
             this.search()
         },
+        watch:{
+            text(){
+                this.search()
+            }
+        },
         methods:{
              search(){
-                 this.$store.dispatch('search/action_get_search')
-            }
+                 this.$store.dispatch('search/action_get_search', this.text);
+             }
         }
     }
 </script>
@@ -292,63 +292,6 @@
     .title{
         text-transform: uppercase;
         font-size: 14px;
-    }
-    .leave-message {
-        display: flex;
-        margin: 0 40px;
-        cursor: pointer;
-    }
-    .picture-leave-message{
-        width: 32px;
-        max-width: 32px;
-        height: 38px;
-        max-height: 38px;
-        border-top-right-radius: 46%;
-        border-top-left-radius: 46%;
-        background-color: white;
-        background-repeat: no-repeat;
-        display: flex;
-        align-items: flex-end;
-        background-image: url("./../../assets/leave-message.svg");
-    }
-    .picture-leave-message div{
-        width: 100%;
-        height: 14px;
-    }
-    .picture-leave-message div:before, .picture-leave-message div:after{
-        content: '';
-        display: inline-block;
-        width: 4px;
-        height: 13px;
-        background: #CA4635;
-        position: relative;
-        top: -10px;
-    }
-    .picture-leave-message div:after{
-        right: -24px;
-    }
-    .text-leave-message{
-        background: #32405B;
-        width: 0px;
-        height: 22px;
-        max-width: 120px;
-        max-height: 22px;
-        padding: 3px 7px;
-        margin-left: -20px;
-        font-family: Montserrat;
-        font-style: normal;
-        font-weight: bold;
-        justify-content: flex-end;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        font-size: 11.181px;
-        color: #FFFFFF;
-        z-index: -1;
-        margin-top: 5px;
-        transition: 1s width;
-    }
-    .leave-message:hover > .text-leave-message{
-        width: 120px;
     }
 </style>
 

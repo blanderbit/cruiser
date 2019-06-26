@@ -3,7 +3,7 @@
         <tr v-if="type == 'header'">
             <td :style="{background: background ? background : '#F3F6F8'}"
                 class="w1"
-                >
+            >
                 <div class="w1 nested-text">picture</div>
             </td>
             <td :style="{background: background ? background : '#F3F6F8'}" class="w2">
@@ -113,7 +113,7 @@
 
 <script>
     import {Basket} from "../../helpers/basket";
-
+    import {mapGetters} from "vuex";
     export default {
         props: [
             'type',
@@ -122,45 +122,58 @@
             'to',
             'item'
         ],
-        data(){
+        data() {
             return {
                 position: null,
-                data:null
+                data: null
             }
         },
-        computed:{
-            mainData:{
-                set(val){
+        watch: {
+            'snackbar'() {
+                this.mainData = {name:'refresh'}
+            }
+        },
+        computed: {
+            ...mapGetters({
+                snackbar: 'error/get_data_error_or_message'
+            }),
+            mainData: {
+                set(val) {
                     this.data = val
                 },
-                get(){
-                    let product =  this.data ? product = this.data : JSON.parse(JSON.stringify(this.item));
-                    let array = [{active:false}, {active:false}, {active:false}, {active:false}];
+                get() {
+                    let product = this.newData(this.item);
+                    let array = [{active: false}, {active: false}, {active: false}, {active: false}];
+                    const arrayId = this.getAvailableArray();
                     product.data.forEach(item => {
                         const regex = /\d+/g;
-                        const warehouses =item.warehouses.split(' ');
+                        const warehouses = item.warehouses.split(' ');
                         item.warehousesNumber = warehouses[0].match(regex);
-                        item.warehousesNumber =  !item.warehousesNumber ? 1 : item.warehousesNumber[0] ;
+                        item.warehousesNumber = !item.warehousesNumber ? 1 : item.warehousesNumber[0];
                         item.warehousesDay = this.dataDayFormat(warehouses[1]);
                         item.warehouses && delete item.warehouses;
                         item.active = true;
-                        array.splice(item.warehousesNumber -1, 1, item)
+                        item.isBasket = arrayId.indexOf(item.unique_hashes) > -1;
+                        array.splice(item.warehousesNumber - 1, 1, item)
                     });
-                    product.data = array.map((item,index) => {
+                    product.data = array.map((item, index) => {
                         if (!item.active) {
                             item.available = 0;
                             item.warehousesDay = null;
                             item.warehousesNumber = index + 1
                         }
-                        item.qty = 0;
+                        const basketContainer = Basket.getThingByIndex(item && item.unique_hashes);
+                        item.qty = basketContainer &&
+                        basketContainer.basket &&
+                        basketContainer.basket.qty ? basketContainer.basket.qty : 0;
                         return item;
                     });
-                    !this.data && (this.data = product);
+                    this.data = product;
                     return this.data;
                 }
             },
         },
-        created(){
+        created() {
             let arr = Array.apply(null, {length: this.to - this.from}).map(Number.call, Number);
             let count = 0;
             this.position = arr.map(() => {
@@ -168,36 +181,64 @@
                 return this.from + count
             });
         },
-        methods:{
-            dataDayFormat(data){
+        methods: {
+            dataDayFormat(data) {
                 const statics = data;
                 const regex = /\d+/g;
                 data = data.match(regex);
                 data = data[data.length - 1];
-                if(data.indexOf(1) > -1) return `${statics} day`;
+                if (data.indexOf(1) > -1) return `${statics} day`;
                 return `${statics} days`;
             },
-            toggleQty(data, operation){
-                if(!data.active) return this.toStore('red', 'Not available warehouse');
-                if(!data.available) return this.toStore('red', 'Not available parts');
-                if(data.qty == data.available && operation == '+') return this.toStore('red', 'Not available parts');
-                if(data.qty == 0 && operation == '-') return this.toStore('red', 'Qty cannot be less than 0');
+            toggleQty(data, operation) {
+                if (!data.active)    return this.toStore('red', 'Not available warehouse');
+                if (!data.available) return this.toStore('red', 'Not available parts');
+                if (data.qty == data.available && operation == '+') return this.toStore('red', 'Not available parts');
+                if (data.qty == 0 && operation == '-') return this.toStore('red', 'Qty cannot be less than 0');
+                let basketContainer = Basket.getThingByIndex(data.unique_hashes);
+                const basketItemIndex = this.getLocalStorageFindIndexThings(data.unique_hashes);
                 data.qty = eval(`${data.qty} ${operation} 1`);
+                basketContainer&& basketContainer.basket && (basketContainer.basket.qty = data.qty);
+                if(basketContainer && basketItemIndex > -1){
+                    Basket.changeItemInBasketByIndex(basketItemIndex, basketContainer);
+                    this.toStore('red', 'Successfully update basket');
+                }
             },
-            toStore(type, mes){
+            toStore(type, mes) {
                 this.$store.commit('error/setValue', {
                     name: 'data',
                     data: {type: type, text: mes, active: true}
                 });
             },
-            toBasket(item){
-                const basketItem = JSON.parse(JSON.stringify(this.data));
+
+            toBasket(item) {
+                const basketItem = this.newData(this.data);
                 basketItem.data && delete basketItem.data;
                 basketItem.basket = item;
-                if(!item.active) return this.toStore('red', 'Not available warehouse');
-                if(!item.available) return this.toStore('red', 'Not available parts');
+                if (!item.active)    return this.toStore('red', 'Not available warehouse');
+                if (!item.available) return this.toStore('red', 'Not available parts');
+                if (item.isBasket)  {
+                    const index = this.getLocalStorageFindIndexThings(basketItem.basket.unique_hashes);
+                    const activeRemove = index > -1;
+                    activeRemove && Basket.deleteThing(index);
+                    this.mainData = false;
+                    if(activeRemove) return this.toStore('red', 'Successfully removed from the basket');
+                }
                 Basket.addThing(basketItem);
                 this.toStore('green', 'Successfully added to basket');
+                this.mainData = basketItem
+            },
+
+            getLocalStorageThings: () => Basket.getAllThing(),
+
+            getLocalStorageFindIndexThings: (id) => Basket.getIndexThing(id),
+
+            newData : (data) =>  JSON.parse(JSON.stringify(data)),
+
+            getAvailableArray() {
+                return (this.getLocalStorageThings() || [])
+                    .map(item => item && item.basket && item.basket.unique_hashes)
+                    .filter(item => item);
             }
         }
     }
@@ -213,6 +254,7 @@
         vertical-align: top;
         /*border-right: 1px solid #FFFFFF;*/
     }
+
     .w1 {
         width: 96px;
         max-width: 96px;
@@ -242,6 +284,7 @@
         width: 187px;
         max-width: 187px;
     }
+
     .w7 {
         width: 80px;
         max-width: 80px;
@@ -288,19 +331,23 @@
         display: flex;
         align-items: center;
     }
-    .item-day{
+
+    .item-day {
         padding: 10px 13px;
         display: flex;
         font-weight: normal;
     }
-    .price{
+
+    .price {
         font-weight: bold;
     }
-    .quantity, .count{
+
+    .quantity, .count {
         display: flex;
         margin-right: 12px;
     }
-    .quantity{
+
+    .quantity {
         padding: 0;
         padding-left: 13px;
         align-items: center;
@@ -309,22 +356,26 @@
         max-height: 34px;
     }
 
-    .count-operation{cursor: pointer;
+    .count-operation {
+        cursor: pointer;
         width: 20px;
         height: 20px;
         border-radius: 50%;
         background: #FFFFFF;
     }
-    .count, .count-operation{
+
+    .count, .count-operation {
 
         display: flex;
         align-items: center;
         justify-content: center;
     }
-    .count-total{
+
+    .count-total {
         margin: 0 6px;
     }
-    .add-container{
+
+    .add-container {
         background: #32405B;
         border-radius: 20px;
         padding: 3.15px 8px;
@@ -333,38 +384,46 @@
         margin-right: 12px;
         cursor: pointer;
     }
-    .add-container:hover{
+
+    .add-container:hover {
         background: #586A8C;
     }
-    .add-container:active, .add-container.active{
+
+    .add-container:active, .add-container.active {
         background: #8BC240;
     }
-    .add-basket, .comment{
+
+    .add-basket, .comment {
         width: 16px;
         height: 15px;
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
     }
-    .add-basket-background{
+
+    .add-basket-background {
         background-image: url("./../../assets/add-basket.png");
     }
-    .add-text{
+
+    .add-text {
         color: #FFFFFF;
         font-family: Montserrat;
         font-style: normal;
         font-weight: bold;
         font-size: 11.181px;
     }
-    .comment{
+
+    .comment {
         background-image: url("./../../assets/comment.svg");
         cursor: pointer;
     }
-    .nested-text{
+
+    .nested-text {
         padding: 13px;
         padding-bottom: 11px;
     }
-    img.w1{
+
+    img.w1 {
         margin-top: 25px;
     }
 </style>

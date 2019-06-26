@@ -27,7 +27,10 @@
          </div>
         <div class="menu-other basket-menu pointer" @click.self="toggleBasket()">
             <div class="badge all-center">{{count}}</div>
-            <basket v-if="isBasketOpen"></basket>
+            <basket
+                    v-if="isBasketOpen"
+                    @refresh="refreshDataInBasket($event)"
+            ></basket>
         </div>
         <div class="menu-other profile-menu"></div>
     </div>

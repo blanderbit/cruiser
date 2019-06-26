@@ -25,11 +25,12 @@ export default {
             isBeforeMenu: false,
             isPaddingMenu: false,
             searchText: '',
-            countData: 0
+            countData: 0,
+            activeRefresh: false
         }
     },
     created() {
-        this.count = this.getCountBAsket()
+        this.count = this.getCountBasket()
     },
     computed: {
         count: {
@@ -37,7 +38,7 @@ export default {
                 return this.countData
             },
             set() {
-                this.countData = this.getCountBAsket()
+                this.countData = this.getCountBasket()
             }
         },
         ...mapGetters({
@@ -46,7 +47,7 @@ export default {
     },
     watch: {
         'snackbar'() {
-            this.countData = this.getCountBAsket()
+            this.countData = this.getCountBasket()
         }
     },
     methods: {
@@ -62,8 +63,11 @@ export default {
             });
             this.$router.history.current.name !== 'search' && this.$router.push('/search')
         },
-        getCountBAsket() {
-            return Basket.getAllThing().length
+        getCountBasket() {
+            return Basket.getAllThing() ? Basket.getAllThing().length : 0
+        },
+        refreshDataInBasket(){
+            this.countData = this.getCountBasket();
         }
     }
 }

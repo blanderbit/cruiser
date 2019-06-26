@@ -6,7 +6,7 @@
         <div>Delete</div>
     </div>
     <div class="basket-container-products">
-        <div class="item-shop-basket" v-for="item in data">
+        <div class="item-shop-basket" v-for="(item, index) in data">
             <div class="item-shop-basket-picture"></div>
             <div class="item-shop-basket-name">
                 <div class="item-shop-basket-name-title">
@@ -32,7 +32,7 @@
                 </div>
             </div>
             <div class="item-shop-basket-delete all-center">
-                <div class="icon-delete pointer"></div>
+                <div class="icon-delete pointer" @click="deleteThingsInBasket(index)"></div>
             </div>
         </div>
     </div>
