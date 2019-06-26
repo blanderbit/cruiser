@@ -52,11 +52,18 @@
     import rightAside from "../../common/mainElements/rightAside";
     import table from "../../common/mainElements/table";
     import {mapGetters} from "vuex"
+    import {Search} from "../../api/search";
     export default {
-        // async fetch({store}){
-        //     let {data} = await store.dispatch('search/action_get_search')
-        //     console.log('data',data)
-        // },
+         async asyncData({store, query}){
+             let data;
+             try{
+                 data = await Search.getSearchData(query && query.search);
+                 data = data.body
+             } catch (e) {
+                data = []
+             }
+             return {data:data}
+        },
         components: {
             'app-left-aside': leftAside,
             'app-right-aside': rightAside,
@@ -69,12 +76,8 @@
         },
         computed:{
             ...mapGetters({
-                data:'search/get_search_result',
                 text:'search/get_search_text'
             })
-        },
-        mounted(){
-            this.search()
         },
         watch:{
             text(){
@@ -82,8 +85,15 @@
             }
         },
         methods:{
-             search(){
-                 this.$store.dispatch('search/action_get_search', this.text);
+             async search(){
+                 let data;
+                 try{
+                     data = await Search.getSearchData(this.text);
+                     data = data.body
+                 } catch (e) {
+                     data = []
+                 }
+                 this.data = data
              }
         }
     }

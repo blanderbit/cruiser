@@ -13,6 +13,7 @@
     "precommit": "npm run lint"
   },
   "dependencies": {
+    "nodejs-base64": "^1.0.3",
     "nuxt": "^2.0.0",
     "vue-resource": "^1.5.1",
     "vuetify": "^1.5.16"

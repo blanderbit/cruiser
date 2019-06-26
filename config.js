@@ -1,3 +1,3 @@
 export const enviroment = {
-    url: 'http://192.168.88.166/'
+    url: 'http://cruiser-webstore-back.qbex.io/'
 }

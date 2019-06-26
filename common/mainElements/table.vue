@@ -45,12 +45,12 @@
             <td :style="{background: background ? background : '#F3F6F8'}"
                 class="w2" style="font-weight: normal"
                 v-if="(!from && !to) || this.position.indexOf(2) > -1">
-                <div class="w2 nested-text">{{mainData.brand_name}}</div>
+                <div class="w2 nested-text" @click="toRouter()">{{mainData.brand_name}}</div>
             </td>
             <td :style="{background: background ? background : '#F3F6F8'}"
                 class="w3"
                 v-if="(!from && !to) || this.position.indexOf(3) > -1">
-                <div class="w3 nested-text">{{mainData.part_number}}</div>
+                <div class="w3 nested-text" @click="toRouter()">{{mainData.part_number}}</div>
             </td>
             <td :style="{background: background ? background : '#F3F6F8'}"
                 class="w4"
@@ -114,6 +114,7 @@
 <script>
     import {Basket} from "../../helpers/basket";
     import {mapGetters} from "vuex";
+    import { base64encode, base64decode } from 'nodejs-base64';
     export default {
         props: [
             'type',
@@ -130,7 +131,7 @@
         },
         watch: {
             'snackbar'() {
-                this.mainData = {name:'refresh'}
+                // this.mainData = {name:'refresh'}
             }
         },
         computed: {
@@ -145,7 +146,11 @@
                     let product = this.newData(this.item);
                     let array = [{active: false}, {active: false}, {active: false}, {active: false}];
                     const arrayId = this.getAvailableArray();
-                    product.data.forEach(item => {
+                    product && (product.url = base64encode(JSON.stringify({
+                        brand: product.brand_name,
+                        part_number: product.part_number
+                    })));
+                    product && product.data && product.data.forEach(item => {
                         const regex = /\d+/g;
                         const warehouses = item.warehouses.split(' ');
                         item.warehousesNumber = warehouses[0].match(regex);
@@ -156,7 +161,7 @@
                         item.isBasket = arrayId.indexOf(item.unique_hashes) > -1;
                         array.splice(item.warehousesNumber - 1, 1, item)
                     });
-                    product.data = array.map((item, index) => {
+                    product && product.data && (product.data = array.map((item, index) => {
                         if (!item.active) {
                             item.available = 0;
                             item.warehousesDay = null;
@@ -167,7 +172,7 @@
                         basketContainer.basket &&
                         basketContainer.basket.qty ? basketContainer.basket.qty : 0;
                         return item;
-                    });
+                    }));
                     this.data = product;
                     return this.data;
                 }
@@ -233,12 +238,21 @@
 
             getLocalStorageFindIndexThings: (id) => Basket.getIndexThing(id),
 
-            newData : (data) =>  JSON.parse(JSON.stringify(data)),
+            newData : (data) =>  {
+                try{
+                    return JSON.parse(JSON.stringify(data))
+                } catch (e){
+                    return {}
+                }
+            },
 
             getAvailableArray() {
                 return (this.getLocalStorageThings() || [])
                     .map(item => item && item.basket && item.basket.unique_hashes)
                     .filter(item => item);
+            },
+            toRouter(){
+                this.$router.push(`/products/${this.data.url}`)
             }
         }
     }

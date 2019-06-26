@@ -11,14 +11,20 @@
             <div class="item-shop-basket-name">
                 <div class="item-shop-basket-name-title">
                     Brand:
-                    <span class="item-shop-basket-name-description-in-title">{{item.brand_name}}</span>
+                    <span class="item-shop-basket-name-description-in-title"
+                          @click="toRouter(item)">
+                        {{item.brand_name}}
+                    </span>
                 </div>
                 <div class="item-shop-basket-name-description">
                     {{item.description_english}}
                 </div>
                 <div class="item-shop-basket-name-title">
                     Part number
-                    <span class="item-shop-basket-name-description-in-title">{{item.part_number}}</span>
+                    <span class="item-shop-basket-name-description-in-title"
+                          @click="toRouter(item)">
+                        {{item.part_number}}
+                    </span>
                 </div>
             </div>
             <div class="item-shop-basket-quantity">

@@ -14,7 +14,7 @@ export default {
         this.getThings()
     },
     methods: {
-        getThings(){
+        getThings() {
             this.total = 0;
             this.data = this.getLocalStorageThings() || [];
             this.data.forEach(
@@ -25,7 +25,7 @@ export default {
 
         getLocalStorageThings: () => Basket.getAllThing(),
 
-        deleteThingsInBasket(index){
+        deleteThingsInBasket(index) {
             Basket.deleteThing(index);
             this.getThings();
             this.$store.commit('error/setValue', {
@@ -33,6 +33,9 @@ export default {
                 data: {type: 'red', text: 'Successfully removed from the basket', active: true}
             });
             this.$emit('refresh', true)
+        },
+        toRouter(data) {
+            this.$router.push(`/products/${data.url}`)
         }
     }
 }

@@ -17,14 +17,14 @@
                     </div>
                 </div>
                 <div class="product-description">
-                    <div>Brand:<span style="font-weight: bold">Toyota</span></div>
+                    <div>Brand:<span style="font-weight: bold">{{item.brand_name}}</span></div>
                     <div class="container-description">
                         <div class="container-description-text">
                             <div class="name-product">
-                                NEW OEM TOYOTA LAND CRUISER 80 SERIES OR LEXUS LX450 AIR CLEANER INTAKE HOSE
+                                {{item.description_english}}
                             </div>
                             <div class="name-product" style="position: relative">
-                                Part number:<span style="font-weight: bold">1626210011</span>
+                                Part number:<span style="font-weight: bold">{{item.part_number}}</span>
                                 <div class="arrow-superseeded">
                                     <div class="arrow-image"></div>
                                     <div class="container-arrow-text">
@@ -34,12 +34,13 @@
                                 </div>
                             </div>
                             <div class="name-product">
-                                Weight (kg):<span style="font-weight: bold"> 2.35</span>
+                                Weight (kg):<span style="font-weight: bold">2.35</span>
                             </div>
                         </div>
                         <app-table
-                                :from="5"
-                                :to="9">
+                            :from="5"
+                            :to="9"
+                            :item="item">
                         </app-table>
                     </div>
                 </div>
@@ -158,8 +159,13 @@
 
 <script>
     import table from "../../../common/mainElements/table";
-
+    import {Search} from "../../../api/search";
+    import { base64encode, base64decode } from 'nodejs-base64';
     export default {
+        async asyncData({route}){
+            const {data} = await Search.getSearchItem(JSON.parse(base64decode(route.params.product)));
+            return {item: data}
+        },
         name: "index",
         components: {
             'app-table': table,

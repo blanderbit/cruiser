@@ -61,7 +61,7 @@ export default {
                 name: 'searchText',
                 data: this.searchText
             });
-            this.$router.history.current.name !== 'search' && this.$router.push('/search')
+            this.$router.history.current.name !== 'search' && this.$router.push(`/search?search=${this.searchText}`)
         },
         getCountBasket() {
             return Basket.getAllThing() ? Basket.getAllThing().length : 0
