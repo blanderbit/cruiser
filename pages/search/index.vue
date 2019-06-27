@@ -56,6 +56,10 @@
     export default {
          async asyncData({store, query}){
              let data;
+             query && query.search && store.commit('search/setValue', {
+                 name: 'searchText',
+                 data: query && query.search
+             });
              try{
                  data = await Search.getSearchData(query && query.search);
                  data = data.body

@@ -68,7 +68,11 @@
                 v-if="(!from && !to) || this.position.indexOf(6) > -1">
                 <div class="w9 warehouse-container" v-for="(item) in mainData.data">
                     <div class="item-warehouse">warehouse {{item.warehousesNumber}}</div>
-                    <div class="count-warehouse red">{{item.available}}</div>
+                    <div class="count-warehouse" :class="
+                        (item.available == 0 && 'red') ||
+                        (item.available < 6 && 'yellow') ||
+                        (item.available > 5 && 'green')
+                    ">{{item.available}}</div>
                 </div>
             </td>
             <td :style="{background: background ? background : '#F3F6F8'}"
@@ -143,7 +147,7 @@
                     this.data = val
                 },
                 get() {
-                    let product = this.newData(this.item);
+                    let product = this.data ? this.newData(this.data) : this.newData(this.item);
                     let array = [{active: false}, {active: false}, {active: false}, {active: false}];
                     const arrayId = this.getAvailableArray();
                     product && (product.url = base64encode(JSON.stringify({
@@ -152,10 +156,15 @@
                     })));
                     product && product.data && product.data.forEach(item => {
                         const regex = /\d+/g;
-                        const warehouses = item.warehouses.split(' ');
-                        item.warehousesNumber = warehouses[0].match(regex);
-                        item.warehousesNumber = !item.warehousesNumber ? 1 : item.warehousesNumber[0];
-                        item.warehousesDay = this.dataDayFormat(warehouses[1]);
+                        const warehouses = item.warehouses ? item.warehouses.split(' ') : [];
+                        if(!item.warehousesNumber) {
+                            item.warehousesNumber = warehouses[0] && warehouses[0].match(regex);
+                            item.warehousesNumber = !item.warehousesNumber ? 1 : item.warehousesNumber[0];
+                        }
+
+                        if(!item.warehousesDay) {
+                            item.warehousesDay = this.dataDayFormat(warehouses[1]);
+                        }
                         item.warehouses && delete item.warehouses;
                         item.active = true;
                         item.isBasket = arrayId.indexOf(item.unique_hashes) > -1;
@@ -167,10 +176,11 @@
                             item.warehousesDay = null;
                             item.warehousesNumber = index + 1
                         }
+
                         const basketContainer = Basket.getThingByIndex(item && item.unique_hashes);
                         item.qty = basketContainer &&
                         basketContainer.basket &&
-                        basketContainer.basket.qty ? basketContainer.basket.qty : 0;
+                        basketContainer.basket.qty ? basketContainer.basket.qty : item.qty ? item.qty : 0;
                         return item;
                     }));
                     this.data = product;
@@ -190,9 +200,9 @@
             dataDayFormat(data) {
                 const statics = data;
                 const regex = /\d+/g;
-                data = data.match(regex);
-                data = data[data.length - 1];
-                if (data.indexOf(1) > -1) return `${statics} day`;
+                data && (data = data.match(regex));
+                data && (data = data[data.length - 1]);
+                if (data && data.indexOf(1) > -1) return `${statics} day`;
                 return `${statics} days`;
             },
             toggleQty(data, operation) {
@@ -221,17 +231,17 @@
                 basketItem.data && delete basketItem.data;
                 basketItem.basket = item;
                 if (!item.active)    return this.toStore('red', 'Not available warehouse');
-                if (!item.available) return this.toStore('red', 'Not available parts');
+                if (!item.available) return this.toStore('red', 'Not available parts');debugger
                 if (item.isBasket)  {
                     const index = this.getLocalStorageFindIndexThings(basketItem.basket.unique_hashes);
                     const activeRemove = index > -1;
                     activeRemove && Basket.deleteThing(index);
-                    this.mainData = false;
+                    this.mainData = this.newData(this.mainData);
                     if(activeRemove) return this.toStore('red', 'Successfully removed from the basket');
                 }
                 Basket.addThing(basketItem);
                 this.toStore('green', 'Successfully added to basket');
-                this.mainData = basketItem
+                this.mainData = this.newData(this.mainData)
             },
 
             getLocalStorageThings: () => Basket.getAllThing(),

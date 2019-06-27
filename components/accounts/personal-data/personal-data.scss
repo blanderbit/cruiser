@@ -1,34 +1,41 @@
-.tab-component {
+.personal-data{
+    width: 100%;
+    display: flex;
+    margin-bottom: 81px;
+}
+.personal-data .personal-data-item{
+    width: 50%;
+}
+.personal-data .personal-data-item:first-child {
+    margin-right: 30px;
+}
+.personal-data .personal-data-item > div{
+    width: 100%;
+}
+.personal-data .personal-data-item > div label {
+    display: block;
+    width: 100%;
+    color: #32405B;
+    letter-spacing: -0.06px;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 12px;
+    margin-bottom: 10px;
+    margin-top: 32px;
+}
+.personal-data .personal-data-item > div input {
+    background: #ECF0F3;
+    padding: 13px;
+    width: calc(100% - 30px);
+    border:none;
+    color: #BABABA;
+}
+.personal-data .personal-data-item > div input::placeholder{
+    font-family: Montserrat;
     font-style: normal;
     font-weight: normal;
-    font-size: 14px;
-    line-height: 16px;
-    display: flex;
-    margin: 0;
-    padding: 0;
-}
-.tab-component li{
-    padding: 21px 13px;
-    background: #D4D7DE;
-    border-right: 1px solid #ECF0F3;
-    border-top: 3px solid #D4D7DE;
-    cursor: pointer;
-    list-style: none;
-    word-wrap: break-word;
-}
-.tab-component li:last-child{
-    border-right: none;
-}
-.tab-component li:hover, .tab-component li.active-tab{
-    font-weight: bold;
-    font-size: 14px;
-    color: #CA4635;
-    background: #ECF0F3;
-    letter-spacing: -0.07px;
-    border-top: 3px solid #CA4635;
-}
-.upBackground{
-    height: 5px;
-    width:100%;
-    background: #ECF0F3;
+    font-size: 12px;
+    line-height: 0px;
+    letter-spacing: -0.06px;
+    color: #BABABA;
 }

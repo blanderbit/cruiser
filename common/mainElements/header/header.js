@@ -48,6 +48,9 @@ export default {
     watch: {
         'snackbar'() {
             this.countData = this.getCountBasket()
+        },
+        '$route'(){
+            this.$emit('getActiveBasket', false)
         }
     },
     methods: {

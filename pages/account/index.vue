@@ -12,6 +12,9 @@
                     @currentCardIndexUp="getIndexCard($event,'currentCardIndexUp')">
             </tab-component-account>
             <accordeont-account v-if="currentCardIndexUp == 0"></accordeont-account>
+            <edit-data          v-if="currentCardIndexUp == 1"></edit-data>
+            <cars               v-if="currentCardIndexUp == 2"></cars>
+            <saved-search       v-if="currentCardIndexUp == 3"></saved-search>
         </div>
         <app-right-aside></app-right-aside>
     </div>
@@ -22,6 +25,7 @@
     import rightAside from "../../common/mainElements/rightAside";
     import tabComponentAccount from "../../components/accounts/tabComponentAccount/index"
     import accordeon from "../../components/accounts/accordeon/index"
+    import personalData from "../../components/accounts/personal-data/index"
 
     export default {
         components: {
@@ -29,6 +33,9 @@
             'app-right-aside': rightAside,
             'tab-component-account': tabComponentAccount,
             'accordeont-account': accordeon,
+            'edit-data': personalData,
+            'cars': accordeon,
+            'saved-search': accordeon,
         },
         name: "index.vue",
         data() {
