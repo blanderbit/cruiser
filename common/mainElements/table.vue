@@ -162,9 +162,7 @@
                             item.warehousesNumber = !item.warehousesNumber ? 1 : item.warehousesNumber[0];
                         }
 
-                        if(!item.warehousesDay) {
-                            item.warehousesDay = this.dataDayFormat(warehouses[1]);
-                        }
+                        !item.warehousesDay && (item.warehousesDay = this.dataDayFormat(warehouses[1]));
                         item.warehouses && delete item.warehouses;
                         item.active = true;
                         item.isBasket = arrayId.indexOf(item.unique_hashes) > -1;

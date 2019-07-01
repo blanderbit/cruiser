@@ -13,8 +13,12 @@
         <main @click="isBasketOpen ? isBasketOpen = !isBasketOpen : null">
             <nuxt/>
         </main>
-        <app-footer>
-        </app-footer>
+        <app-footer></app-footer>
+        <app-auth
+            v-if="login || register"
+            :isLogin="login"
+            :isRegister="register">
+        </app-auth>
     </div>
 </template>
 
@@ -22,17 +26,25 @@
     import header from '../common/mainElements/header/index'
     import footer from '../common/mainElements/footer/index'
     import messageToast from "../common/mainElements/vuetyfy-toast/messageToast";
-
+    import auth from '../components/auth/index'
+    import {mapGetters} from 'vuex'
     export default {
         components: {
             "app-header": header,
             "app-footer": footer,
             "app-toast": messageToast,
+            "app-auth": auth
         },
         data(){
             return{
                 isBasketOpen:false
             }
+        },
+        computed:{
+            ...mapGetters({
+                login: 'auth/get_login_modal',
+                register: 'auth/get_register_modal'
+            })
         },
         methods: {
             getActiveBasket(event){

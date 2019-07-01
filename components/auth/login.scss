@@ -1,0 +1,340 @@
+.login {
+    background: rgba(50, 64, 91, 0.8);
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+}
+
+.login-is {
+    width: 100%;
+}
+
+.container-login {
+    width: 510px;
+    max-width: 510px;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.container-content{
+
+    padding: 28px 26px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title-login {
+    font-weight: bold;
+    font-size: 24px;
+    text-align: center;
+    letter-spacing: -0.12px;
+    color: #32405B;
+}
+
+.description-login {
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    text-align: center;
+    color: #32405B;
+    margin-top: 20px;
+}
+
+.sotial-login {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.sotial-login > div {
+    width: 214px;
+    height: 40px;
+    max-width: 214px;
+    max-height: 40px;
+    background: #FFFFFF;
+    border: 1px solid #D4D7DE;
+}
+
+.sotial-login > div:first-child {
+    margin-right: 30px;
+}
+
+.sotial-login > div.facebook {
+    background: #3B5998;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 13px;
+    line-height: 20px;
+    text-transform: uppercase;
+    color: #FFFFFF;
+}
+
+.login-hr-or {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-top: 38px;
+}
+
+.login-hr-or div:first-child, .login-hr-or div:last-child {
+    height: 1px;
+    width: 100%;
+    background: #DADADA;
+}
+
+.login-hr-or div.or {
+    margin: 0 9.2px;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    text-align: center;
+
+    color: #32405B;
+}
+
+.personal-data-item {
+    width: 100%;
+}
+
+.personal-data-item > label {
+    display: block;
+    width: 100%;
+    color: #32405B;
+    letter-spacing: -0.06px;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 12px;
+    margin-bottom: 10px;
+    margin-top: 32px;
+}
+
+.personal-data-item > div input {
+    background: #ECF0F3;
+    padding: 13px;
+    width: calc(100% - 30px);
+    border: none;
+    color: #BABABA;
+}
+
+.select-result-simple {
+    align-self: flex-start;
+    width: 100%;
+    margin: 26px 0;
+}
+
+.styled-input-single {
+    position: relative;
+    padding: 0 0 7px 25px;
+    text-align: left;
+
+    label {
+        cursor: pointer;
+        margin: 0;
+        font-size: 14px;
+        font-weight: 500;
+
+        &:before,
+        &:after {
+            content: '';
+            position: absolute;
+            top: 65%;
+            background: #ECF0F3;
+            border-radius: 50%;
+        }
+
+        &:before {
+            left: 0;
+            border: 2px solid #BABABA;
+            width: 10px;
+            height: 10px;
+            margin: -15px 0 0;
+            background: #f7f7f7;
+            box-shadow: 0 0 1px #4876D0;
+        }
+
+        &:after {
+            left: 4px;
+            width: 6px;
+            top: 6px;
+            height: 6px;
+
+            opacity: 0;
+            background: #CA4635;
+            transform: translate3d(-40px, 0, 0) scale(0.5);
+            transition: opacity 0.25s ease-in-out, transform 0.25s ease-in-out;
+        }
+    }
+
+    input[type="radio"],
+    input[type="checkbox"] {
+        position: absolute;
+        top: 0;
+        left: -9999px;
+        visibility: hidden;
+
+        &:checked + label {
+            &:before {
+            }
+
+            &:after {
+                transform: translate3d(0, 0, 0);
+                opacity: 1;
+            }
+        }
+    }
+}
+
+.styled-input--square {
+    label {
+        margin: 0;
+
+        &:before,
+        &:after {
+            border-radius: 0;
+        }
+    }
+}
+
+.styled-input--rounded {
+    label {
+        &:before {
+            border-radius: 10px;
+        }
+
+        &:after {
+            border-radius: 6px;
+        }
+    }
+}
+
+.styled-input--diamond {
+    .styled-input-single {
+        padding-left: 45px;
+    }
+
+    label {
+        &:before,
+        &:after {
+            border-radius: 0;
+        }
+
+        &:before {
+            transform: rotate(45deg);
+        }
+    }
+
+    input[type="radio"],
+    input[type="checkbox"] {
+
+        &:checked + label {
+            &:after {
+                transform: rotate(45deg);
+                opacity: 1;
+            }
+        }
+    }
+}
+
+.button-login {
+    width: 100%;
+    height: 50px;
+    max-height: 50px;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 13px;
+    line-height: 20px;
+    color: #FFFFFF;
+    background: #32405B;
+}
+
+.button-other-login {
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.button-other-login div {
+    font-family: Montserrat;
+    font-size: 12px;
+    line-height: 14px;
+    letter-spacing: -0.06px;
+    text-decoration-line: underline;
+    color: #32405B;
+}
+
+.sotial-picture {
+    width: 22px;
+    height: 22px;
+
+    margin-right: 16px;
+}
+
+.sotial-picture.google {
+    background-image: url("./../../assets/Google.png");
+}
+
+.sotial-picture.facebook {
+    width: 13px;
+    height: 25px;
+    background-image: url("./../../assets/facebook-forma.png");
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.register-style {
+    height: 84%;
+}
+.register-is{
+    overflow-y: scroll;
+    height: 100%;
+    width: 100%;
+}
+.register-is::-webkit-scrollbar-track
+{
+    -webkit-box-shadow:white;
+    border-radius: 10px;
+    width: 2px;
+    background-color: white;
+}
+//
+.register-is::-webkit-scrollbar
+{
+    width: 8px;
+    //height: 113px;
+    margin-right: 10px;
+    background-color: white;
+}
+.register-is::-webkit-scrollbar-button
+{
+    width: 12px;
+    margin-right: 10px;
+    padding-right: 10px;
+    background-color: white;
+}
+
+.register-is::-webkit-scrollbar-thumb
+{
+    border-radius: 10px;
+    //-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #DADADA;
+}
+
+.subscribe{
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px!important;
+    line-height: 16px;
+    letter-spacing: -0.07px;
+    color: #32405B;
+}

@@ -11,6 +11,10 @@ export default ({ store }) => {
             switch (response.status) {
                 case 404: toStore('red', 'error');
                     return;
+                case 401: toStore('red', 'error');
+                    return;
+                case 403: toStore('red', 'error');
+                    return;
                 case 405: toStore('info', 'error');
                     return;
                 case 200: toStore('green', 'error');

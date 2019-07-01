@@ -1,0 +1,184 @@
+<section class="login all-center">
+    <div class="container-login" :class="isRegister && 'register-style'">
+        <div class="container-content">
+            <div class="button-close"></div>
+            <div class="title-login"  v-if="isLogin">
+                Log in
+            </div>
+            <div class="title-login"  v-if="isRegister">
+                Register
+            </div>
+            <div class="description-login">
+                with your social network
+            </div>
+            <div class="sotial-login">
+                <div class="all-center pointer">
+                    <div class="sotial-picture google"></div>
+                    GOOGLE
+                </div>
+                <div class="all-center facebook pointer">
+                    <div class="sotial-picture facebook"></div>
+                    Facebook
+                </div>
+            </div>
+            <div class="login-hr-or">
+                <div></div>
+                <div class="or">or</div>
+                <div></div>
+            </div>
+            <div class="login-is" v-if="isLogin">
+                <div class="personal-data-item">
+                    <label>Your email</label>
+                    <div>
+                        <input v-model="dataLogin.email" placeholder="This is a required field">
+                    </div>
+                </div>
+                <div class="personal-data-item">
+                    <label>Password</label>
+                    <div>
+                        <input v-model="dataLogin.password" placeholder="This is a required field">
+                    </div>
+                </div>
+                <div class="select-result-simple">
+                    <div class="styled-input-single d-flex align-items-center">
+                        <input type="checkbox" id="simple" name="fieldset-1" v-model="checked"/>
+                        <label for="simple">Keep me logged in</label>
+                    </div>
+                </div>
+                <div class="button-login all-center pointer" @click="login()">
+                    Log in
+                </div>
+                <div class="button-other-login">
+                    <div class="pointer" @click="toRegister()">Not a member? Register </div>
+                    <div class="pointer">I can't remember my password</div>
+                </div>
+            </div>
+            <div class="register-is" v-if="isRegister">
+                <div class="personal-data-item">
+                    <label>Your email</label>
+                    <div>
+                        <input v-model="dataRegister.email" placeholder="This is a required field">
+                    </div>
+                </div>
+                <div class="personal-data-item">
+                    <label>Password</label>
+                    <div>
+                        <input v-model="dataRegister.password" placeholder="This is a required field">
+                    </div>
+                </div>
+                <div class="personal-data-item">
+                    <label>Confirm Password</label>
+                    <div>
+                        <input v-model="dataRegister.c_password" placeholder="This is a required field">
+                    </div>
+                </div>
+                <div>
+                    <div class="personal-data-item">
+                        <label>First Name</label>
+                        <div>
+                            <input v-model="dataRegister.first_name" placeholder="This is a required field">
+                        </div>
+                    </div>
+                    <div class="personal-data-item">
+                        <label>Last Name</label>
+                        <div>
+                            <input v-model="dataRegister.last_name" placeholder="This is a required field">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    optional
+                </div>
+                <div class="personal-data-item">
+                    <label>IH8MUD Username</label>
+                    <div>
+                        <input v-model="dataRegister.ihmud_username"
+                               placeholder="To receive additional 5%. Need to be over 50 posts account">
+                    </div>
+                </div>
+                <div class="personal-data-item">
+                    <label>Street Adress</label>
+                    <div>
+                        <input v-model="dataRegister.street_address" >
+                    </div>
+                </div>
+                <div class="personal-data-item">
+                    <label>Street Adress 2</label>
+                    <div>
+                        <input v-model="dataRegister.street_address_two">
+                    </div>
+                </div>
+                <div>
+                    <div class="personal-data-item">
+                        <label>City</label>
+                        <div>
+                            <input v-model="dataRegister.city">
+                        </div>
+                    </div>
+                    <div class="personal-data-item">
+                        <label>State</label>
+                        <div>
+                            <input v-model="dataRegister.state">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="personal-data-item">
+                        <label>ZIP/Postal code</label>
+                        <div>
+                            <input v-model="dataRegister.postal_code">
+                        </div>
+                    </div>
+                    <div class="personal-data-item">
+                        <label>Country</label>
+                        <div>
+                            <input v-model="dataRegister.country">
+                        </div>
+                    </div>
+                </div>
+                <div class="personal-data-item">
+                    <label>Phone:</label>
+                    <div>
+                        <input v-model="dataRegister.phone">
+                    </div>
+                </div>
+                <div class="personal-data-item">
+                    <label>Frame Number/VIN</label>
+                    <div>
+                        <input v-model="dataRegister.frame_number">
+                    </div>
+                </div>
+                <div>
+                    <div class="personal-data-item">
+                        <label>Month and Year of production</label>
+                        <div>
+                            <input v-model="dataRegister.date_of_production">
+                        </div>
+                    </div>
+                    <div class="personal-data-item">
+                        <label>Original country of Sale</label>
+                        <div>
+                            <input v-model="dataRegister.original_country">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="select-result-simple">
+                    <div class="styled-input-single d-flex align-items-center">
+                        <input type="checkbox" id="simple" name="fieldset-1" v-model="dataRegister.subscribed_for_news"/>
+                        <label for="simple" class="subscribe">
+                            Subscribe to CruiserAddiction to receive newsletters and promotions
+                        </label>
+                    </div>
+                </div>
+                <div class="button-login all-center pointer" @click="register()">
+                    Register
+                </div>
+                <div class="button-other-login">
+                    <div class="pointer" @click="toLogin()">Back to Login</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

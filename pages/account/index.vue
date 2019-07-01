@@ -7,9 +7,9 @@
                 <span class="link-active">Account</span>
             </div>
             <tab-component-account
-                    :tabs="tabs"
-                    :propsCurrent="'currentCardIndexUp'"
-                    @currentCardIndexUp="getIndexCard($event,'currentCardIndexUp')">
+                :tabs="tabs"
+                :propsCurrent="'currentCardIndexUp'"
+                @currentCardIndexUp="getIndexCard($event,'currentCardIndexUp')">
             </tab-component-account>
             <accordeont-account v-if="currentCardIndexUp == 0"></accordeont-account>
             <edit-data          v-if="currentCardIndexUp == 1"></edit-data>
