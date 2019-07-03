@@ -7,12 +7,14 @@
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
-    "start": "nuxt start",
+    "start": "nuxt start --hostname 0.0.0.0",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint"
   },
   "dependencies": {
+    "cookie": "^0.4.0",
+    "cookie-universal-nuxt": "^2.0.16",
     "nodejs-base64": "^1.0.3",
     "nuxt": "^2.0.0",
     "vue-perfect-scrollbar": "^0.1.0",

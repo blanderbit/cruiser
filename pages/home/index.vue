@@ -50,8 +50,12 @@
     import tab from '../../common/mainElements/tabComponent/index'
     import card from '../../common/mainElements/card/index'
     import firstElement from '../../components/homePage/first-element'
+    import * as cookie from "cookie";
 
     export default {
+        fetch({req}){
+              console.log(cookie.parse(req.headers.cookie))
+        },
         name: "index",
         components:{
             "tab-component": tab,

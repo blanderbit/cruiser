@@ -349,15 +349,19 @@
     .v-snack__wrapper {
         display: flex;
         align-items: center;
-        background-color: #323232;
+        background-color: #F3F6F8;
         pointer-events: auto;
         width: 100%;
+        font-weight: normal;
+        font-size: 13px;
+        line-height: 15px;
+        color: #32405B;
+        border: 1px solid #D4D7DE;
         box-shadow: 0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12);
     }
     .v-snack__content {
         width: 100%;
         height: 48px;
-        padding: 14px 24px;
         display: flex;
         align-items: center;
         justify-content: space-between;

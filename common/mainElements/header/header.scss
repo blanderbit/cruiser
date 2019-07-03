@@ -117,7 +117,8 @@ input[type=search]::placeholder {
     background-repeat: no-repeat;
     background-size: contain;
 }
-.menu-other{
+
+.menu-other {
     position: relative;
     border: 1px solid #D4D7DE;
     width: 46px;
@@ -125,6 +126,7 @@ input[type=search]::placeholder {
     background-repeat: no-repeat;
     background-position: 45% 45%;
 }
+
 .basket-menu {
     background-image: url("./../../../assets/cart-basket.png");
     margin-right: 20px;
@@ -143,24 +145,28 @@ input[type=search]::placeholder {
     font-weight: 600;
     font-size: 12.0008px;
 }
-.profile-menu{
+
+.profile-menu {
     background-image: url("./../../../assets/card-profile.svg");
     background-position: 47% 45%;
+    position: relative;
 }
 
-.menu-page{
+.menu-page {
     width: 100vw;
     background: #32405B;
     display: flex;
     justify-content: center;
     padding: 10px 0;
 }
-.menu-page-container{
+
+.menu-page-container {
     padding: 10px 0;
     width: 1110px;
 
 }
-.link{
+
+.link {
     font-family: Montserrat;
     font-style: normal;
     font-weight: 600;
@@ -173,6 +179,13 @@ input[type=search]::placeholder {
     border-right: 1px solid #515d72;
     margin: 10px 0;
 }
-.link:first-child{
+
+.link:first-child {
     padding-left: 0;
+}
+#popub-auth{
+    display: none;
+}
+#popub-auth.active{
+    display: block;
 }

@@ -9,15 +9,15 @@ export default ({ store }) => {
     const errorInterseptor = (request, next) => {
         return next(response => {
             switch (response.status) {
-                case 404: toStore('red', 'error');
+                case 404: toStore('error', 'error');
                     return;
-                case 401: toStore('red', 'error');
+                case 401: toStore('error', 'error');
                     return;
-                case 403: toStore('red', 'error');
+                case 403: toStore('error', 'error');
                     return;
-                case 405: toStore('info', 'error');
+                case 405: toStore('error', 'error');
                     return;
-                case 200: toStore('green', 'error');
+                case 200: toStore('info', 'error');
                     return;
             }
         });

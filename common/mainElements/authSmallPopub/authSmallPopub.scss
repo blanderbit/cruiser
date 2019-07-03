@@ -1,0 +1,79 @@
+.auth-small-popub {
+    background: #F3F6F8;
+    border: 1px solid #D4D7DE;
+    max-width: 316px;
+    max-height: 67px;
+    width: 316px;
+    height: 67px;
+    position: absolute;
+    right: 0px;
+    top: 70px;
+}
+
+.auth-small-popub:after {
+    content: '';
+    position: absolute;
+    right: 12px;
+    top: -11px;
+    width: 18px;
+    height: 18px;
+    background: #F3F6F8;
+    transform: rotate(45deg);
+    //border: 10px solid transparent;
+    border-top: 1px solid #D4D7DE;
+    border-left: 1px solid #D4D7DE;
+    //box-shadow: -5px 0px 0px 0px black, 5px 0px 0px 0px black;
+}
+
+.auth-small-popub-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 19px 31px;
+    align-items: center;
+}
+
+
+.auth-small-popub-container-auth {
+    display: flex;
+}
+
+.popub {
+    font-weight: bold;
+    font-size: 11.181px;
+    line-height: 0px;
+    letter-spacing: -0.055px;
+    color: #FFFFFF;
+    background: #32405B;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+}
+
+.cart-auth {
+    width: 32px;
+    height: 32px;
+    background-color: #CA4635;
+    background-image: url("./../../../assets/login.png");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.cart-auth-register {
+    background-image: url("./../../../assets/register.png");
+    background-color: #91A0BC;
+}
+.auth-small-popub-container-auth-or{
+    font-weight: bold;
+    font-size: 11.181px;
+    line-height: 0px;
+    letter-spacing: -0.055px;
+    color: #91A0BC;
+}
+
+.popub:hover{
+    background-color: #586A8C;
+}
+.popub:active{
+    background-color: #CA4635;
+}

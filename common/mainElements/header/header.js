@@ -1,11 +1,13 @@
 import basket from './../basket/index'
+import authPopub from './../authSmallPopub/index'
 import {Basket} from "../../../helpers/basket";
 import {mapGetters} from "vuex";
 import {Token} from "../../../helpers/token";
 export default {
     name: 'app-header',
     components: {
-        basket: basket
+        basket: basket,
+        "app-auth-popub": authPopub,
     },
     props: ['isBasketOpen'],
     data() {
@@ -27,7 +29,8 @@ export default {
             isPaddingMenu: false,
             searchText: '',
             countData: 0,
-            activeRefresh: false
+            activeRefresh: false,
+            openPopub: false
         }
     },
     created() {
@@ -74,10 +77,14 @@ export default {
             this.countData = this.getCountBasket();
         },
         toAccount(){
-            !Token.getToken() ? this.$store.dispatch('auth/actionValue', {
-                name: 'loginModal',
-                data: true
-            }) : this.$router.push('/account')
+            this.isAutorize && this.$router.push('/account')
+        },
+        isAutorize(){
+            try {
+                return localStorage.getItem('token')
+            } catch (e) {
+                return null
+            }
         }
     }
 }

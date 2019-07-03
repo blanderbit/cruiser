@@ -1,7 +1,7 @@
 <section class="login all-center">
     <div class="container-login" :class="isRegister && 'register-style'">
         <div class="container-content">
-            <div class="button-close"></div>
+            <div class="button-close pointer" @click="close()"></div>
             <div class="title-login"  v-if="isLogin">
                 Log in
             </div>
@@ -28,21 +28,27 @@
             </div>
             <div class="login-is" v-if="isLogin">
                 <div class="personal-data-item">
-                    <label>Your email</label>
+                    <label>Your email<span class="badge-require">*</span></label>
                     <div>
-                        <input v-model="dataLogin.email" placeholder="This is a required field">
+                        <input
+                             v-model="dataLogin.email"
+                             placeholder="This is a required field"
+                             :class="errorLogin.email && errorLogin.email.errors && 'input-error'">
                     </div>
                 </div>
                 <div class="personal-data-item">
-                    <label>Password</label>
+                    <label>Password<span class="badge-require">*</span></label>
                     <div>
-                        <input v-model="dataLogin.password" placeholder="This is a required field">
+                        <input
+                            v-model="dataLogin.password"
+                            placeholder="This is a required field"
+                            :class="errorLogin.password && errorLogin.password.errors && 'input-error'">
                     </div>
                 </div>
                 <div class="select-result-simple">
                     <div class="styled-input-single d-flex align-items-center">
-                        <input type="checkbox" id="simple" name="fieldset-1" v-model="checked"/>
-                        <label for="simple">Keep me logged in</label>
+                        <input type="checkbox" id="simple2" name="fieldset-1" v-model="checked"/>
+                        <label for="simple2">Keep me logged in</label>
                     </div>
                 </div>
                 <div class="button-login all-center pointer" @click="login()">
@@ -55,39 +61,50 @@
             </div>
             <div class="register-is" v-if="isRegister">
                 <div class="personal-data-item">
-                    <label>Your email</label>
+                    <label>Your email<span class="badge-require">*</span></label>
                     <div>
-                        <input v-model="dataRegister.email" placeholder="This is a required field">
+                        <input v-model="dataRegister.email"
+                               placeholder="This is a required field"
+                               :class="errorRegister.email && errorRegister.email.errors && 'input-error'">
                     </div>
                 </div>
                 <div class="personal-data-item">
-                    <label>Password</label>
+                    <label>Password<span class="badge-require">*</span></label>
                     <div>
-                        <input v-model="dataRegister.password" placeholder="This is a required field">
+                        <input v-model="dataRegister.password"
+                               placeholder="This is a required field"
+                               :class="errorRegister.password && errorRegister.password.errors && 'input-error'">
                     </div>
                 </div>
                 <div class="personal-data-item">
-                    <label>Confirm Password</label>
+                    <label>Confirm Password<span class="badge-require">*</span></label>
                     <div>
-                        <input v-model="dataRegister.c_password" placeholder="This is a required field">
+                        <input v-model="dataRegister.c_password"
+                               placeholder="This is a required field"
+                               :class="errorRegister.c_password && errorRegister.c_password.errors && 'input-error'">
                     </div>
                 </div>
-                <div>
+                <div class="personal-data-group">
                     <div class="personal-data-item">
-                        <label>First Name</label>
+                        <label>First Name<span class="badge-require">*</span></label>
                         <div>
-                            <input v-model="dataRegister.first_name" placeholder="This is a required field">
+                            <input v-model="dataRegister.first_name"
+                                   placeholder="This is a required field"
+                                   :class="errorRegister.first_name && errorRegister.first_name.errors && 'input-error'">
                         </div>
                     </div>
                     <div class="personal-data-item">
-                        <label>Last Name</label>
+                        <label>Last Name<span class="badge-require">*</span></label>
                         <div>
-                            <input v-model="dataRegister.last_name" placeholder="This is a required field">
+                            <input v-model="dataRegister.last_name"
+                                   placeholder="This is a required field"
+                                   :class="errorRegister.last_name && errorRegister.last_name.errors && 'input-error'">
                         </div>
                     </div>
                 </div>
-                <div>
+                <div class="optional">
                     optional
+                    <div class="after"></div>
                 </div>
                 <div class="personal-data-item">
                     <label>IH8MUD Username</label>
@@ -108,7 +125,7 @@
                         <input v-model="dataRegister.street_address_two">
                     </div>
                 </div>
-                <div>
+                <div class="personal-data-group">
                     <div class="personal-data-item">
                         <label>City</label>
                         <div>
@@ -122,7 +139,7 @@
                         </div>
                     </div>
                 </div>
-                <div>
+                <div class="personal-data-group">
                     <div class="personal-data-item">
                         <label>ZIP/Postal code</label>
                         <div>
@@ -137,7 +154,9 @@
                     </div>
                 </div>
                 <div class="personal-data-item">
-                    <label>Phone:</label>
+                    <label style="display: flex">
+                        Phone:
+                    </label>
                     <div>
                         <input v-model="dataRegister.phone">
                     </div>
@@ -148,7 +167,7 @@
                         <input v-model="dataRegister.frame_number">
                     </div>
                 </div>
-                <div>
+                <div class="personal-data-group">
                     <div class="personal-data-item">
                         <label>Month and Year of production</label>
                         <div>
@@ -165,8 +184,8 @@
 
                 <div class="select-result-simple">
                     <div class="styled-input-single d-flex align-items-center">
-                        <input type="checkbox" id="simple" name="fieldset-1" v-model="dataRegister.subscribed_for_news"/>
-                        <label for="simple" class="subscribe">
+                        <input type="checkbox" id="simple1" name="fieldset-1" v-model="dataRegister.subscribed_for_news"/>
+                        <label for="simple1" class="subscribe">
                             Subscribe to CruiserAddiction to receive newsletters and promotions
                         </label>
                     </div>

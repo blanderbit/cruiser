@@ -31,6 +31,13 @@ module.exports = {
     /*
     ** Build configuration
     */
+    modules: [
+        // Simple usage
+        'cookie-universal-nuxt',
+
+        // With options
+        ['cookie-universal-nuxt', { alias: 'cookiz' }],
+    ],
     plugins: [
         { src: './plugins/carousel', ssr: false },
         { src: './plugins/star'},

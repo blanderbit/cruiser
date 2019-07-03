@@ -5,10 +5,15 @@
                     v-model="snackActive"
                     :right="right"
                     :top="true"
-                    :timeout="timeout"
-                    :color="snack.type">
-                {{ snack.text }}
-                <v-btn color="black" @click="closeSnack">Close</v-btn>
+                    :timeout="timeout">
+                <div style="display: flex; justify-content: space-between; width: 100%">
+                    <div style="padding: 14px 24px;">
+                        {{ snack.text }}
+                    </div>
+                    <div class="infoToast" :class="snack.type || 'info'">
+
+                    </div>
+                </div>
             </v-snackbar>
         <!--</v-app>-->
     </div>
@@ -66,5 +71,19 @@
     }
 </script>
 
-<style scoped>
+<style>
+    .infoToast{
+        width: 56px;
+        height: 56px;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+    .info{
+        background-color: #32405B;
+        background-image: url("./../../../assets/ok.png");
+    }
+    .error{
+        background-color: #CA4635;
+        background-image: url("./../../../assets/err.png");
+    }
 </style>

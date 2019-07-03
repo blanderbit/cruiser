@@ -8,17 +8,18 @@
                   <div></div>
               </div>
          </div>
-         <div class="cruiser-name" >
+         <div class="cruiser-name pointer" @click="$router.push('/')">
              <span>Cruiser</span><span>Addiction</span>
          </div>
          <div class="search" >
              <div class="info all-center">i</div>
              <div class="info-middle"></div>
-             <input type="search"
-                    v-model="searchText"
-                    @keypress.enter="changeValueSearch($event)"
-                    @change="changeValueSearch($event)"
-                    placeholder="Search by Part Number">
+             <input
+                 type="search"
+                 v-model="searchText"
+                 @keypress.enter="changeValueSearch($event)"
+                 @change="changeValueSearch($event)"
+                 placeholder="Search by Part Number">
          </div>
          <div class="multi-currency" >
              <div class="currency">ENG</div>
@@ -28,11 +29,18 @@
         <div class="menu-other basket-menu pointer" @click.self="toggleBasket()">
             <div class="badge all-center">{{count}}</div>
             <basket
-                    v-if="isBasketOpen"
-                    @refresh="refreshDataInBasket($event)"
-            ></basket>
+                v-if="isBasketOpen"
+                @refresh="refreshDataInBasket($event)">
+            </basket>
         </div>
-        <div class="menu-other profile-menu pointer" @click="toAccount()"></div>
+        <div class="menu-other profile-menu pointer" v-if="!isAutorize()" @click.self="openPopub = !openPopub">
+            <app-auth-popub
+                id="popub-auth"
+                :class="openPopub && 'active'"
+                @closeSmallPopub="openPopub = false">
+            </app-auth-popub>
+        </div>
+        <div class="menu-other profile-menu pointer" v-if="isAutorize()" @click.self="toAccount()"></div>
     </div>
     <div class="menu-page" v-if="isMenu">
         <div class="menu-page-container">

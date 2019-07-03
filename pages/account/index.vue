@@ -44,10 +44,19 @@
                 currentCardIndexUp: 0
             }
         },
+        mounted(){
+            document.body.addEventListener('mouseover', this.isAutorize)
+        },
         methods: {
             getIndexCard(index, type) {
                 this[type] = index
+            },
+            isAutorize(){
+                !localStorage.getItem('token') && this.$router.push('/')
             }
+        },
+        destroyed() {
+            document.body.removeEventListener('mousemove', this.isAutorize)
         }
     }
 </script>

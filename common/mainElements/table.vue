@@ -204,17 +204,17 @@
                 return `${statics} days`;
             },
             toggleQty(data, operation) {
-                if (!data.active)    return this.toStore('red', 'Not available warehouse');
-                if (!data.available) return this.toStore('red', 'Not available parts');
+                if (!data.active)    return this.toStore('error', 'Not available warehouse');
+                if (!data.available) return this.toStore('error', 'Not available parts');
                 if (data.qty == data.available && operation == '+') return this.toStore('red', 'Not available parts');
-                if (data.qty == 0 && operation == '-') return this.toStore('red', 'Qty cannot be less than 0');
+                if (data.qty == 0 && operation == '-') return this.toStore('error', 'Qty cannot be less than 0');
                 let basketContainer = Basket.getThingByIndex(data.unique_hashes);
                 const basketItemIndex = this.getLocalStorageFindIndexThings(data.unique_hashes);
                 data.qty = eval(`${data.qty} ${operation} 1`);
                 basketContainer&& basketContainer.basket && (basketContainer.basket.qty = data.qty);
                 if(basketContainer && basketItemIndex > -1){
                     Basket.changeItemInBasketByIndex(basketItemIndex, basketContainer);
-                    this.toStore('red', 'Successfully update basket');
+                    this.toStore('info', 'Successfully update basket');
                 }
             },
             toStore(type, mes) {
@@ -228,17 +228,17 @@
                 const basketItem = this.newData(this.data);
                 basketItem.data && delete basketItem.data;
                 basketItem.basket = item;
-                if (!item.active)    return this.toStore('red', 'Not available warehouse');
-                if (!item.available) return this.toStore('red', 'Not available parts');debugger
+                if (!item.active)    return this.toStore('error', 'Not available warehouse');
+                if (!item.available) return this.toStore('error', 'Not available parts');
                 if (item.isBasket)  {
                     const index = this.getLocalStorageFindIndexThings(basketItem.basket.unique_hashes);
                     const activeRemove = index > -1;
                     activeRemove && Basket.deleteThing(index);
                     this.mainData = this.newData(this.mainData);
-                    if(activeRemove) return this.toStore('red', 'Successfully removed from the basket');
+                    if(activeRemove) return this.toStore('info', 'Successfully removed from the basket');
                 }
                 Basket.addThing(basketItem);
-                this.toStore('green', 'Successfully added to basket');
+                this.toStore('info', 'Successfully added to basket');
                 this.mainData = this.newData(this.mainData)
             },
 

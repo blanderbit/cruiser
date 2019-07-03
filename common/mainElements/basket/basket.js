@@ -18,7 +18,9 @@ export default {
             this.total = 0;
             this.data = this.getLocalStorageThings() || [];
             this.data.forEach(
-                item => item.basket && item.basket.prices && (this.total += Number(item.basket.prices))
+                item => item.basket &&
+                    item.basket.prices &&
+                    (this.total += Number(item.basket.prices) * (Number(item.basket.qty) || 1))
             );
             this.total = this.total.toFixed(2)
         },

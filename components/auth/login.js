@@ -22,17 +22,17 @@ export default {
 
     },
     mounted() {
-
+        document.body.style.overflowY = 'hidden'
     },
     methods: {
         login() {
-            const error = this.errorLogin;
+            const error = JSON.parse(JSON.stringify(this.errorLogin));
             error.password = Validator.set(
                 this.dataLogin.password,
                 ['required'],
                 'This is a required field'
             );
-            error.password = this.dataLogin.password.length < 6 ? {
+            error.password = this.dataLogin.password && this.dataLogin.password.length < 6 ? {
                 errors: true,
                 message: {min: "Your password must be at least 6 characters long and must contain letters"}
             } : error.password;
@@ -58,32 +58,28 @@ export default {
                         this.$router.push(`/account?user=${res.body.data.token}`)
                     }
                 })
-
+            else {
+                this.errorLogin = error
+            }
         },
         toRegister(){
             this.clearData();
-            this.$store.dispatch('auth/actionValue', {
-                name: 'loginModal',
-                data: false
-            });
-            this.$store.dispatch('auth/actionValue', {
-                name: 'registerModal',
-                data: true
-            });
+            this.toStore(false, 'loginModal');
+            this.toStore(true, 'registerModal');
         },
         toLogin(){
             this.clearData();
+            this.toStore(true, 'loginModal');
+            this.toStore(false, 'registerModal');
+        },
+        toStore(data, type){
             this.$store.dispatch('auth/actionValue', {
-                name: 'loginModal',
-                data: true
-            });
-            this.$store.dispatch('auth/actionValue', {
-                name: 'registerModal',
-                data: false
+                name: type,
+                data: data
             });
         },
         register(){
-            const error = this.errorRegister;
+            const error = JSON.parse(JSON.stringify(this.errorRegister));
             error.password = Validator.set(
                 this.dataRegister.password,
                 ['required'],
@@ -119,17 +115,36 @@ export default {
                 'This is a required field'
             );
             let error_boolean = !error.email.errors ||
-                !error.password.error ||
-                !error.c_password.error ||
+                !error.password.errors ||
+                !error.c_password.errors ||
                 !error.first_name.errors ||
                 !error.last_name.errors;
-            error_boolean && Auth.authRegister(this.dataRegister).then(res => res.body.success && this.toLogin())
+            error_boolean ?
+                Auth.authRegister(this.dataRegister).then(res => {
+                    res.body.success && (this.storeMessage('info', 'Successfully register user'),this.toLogin())
+                }) :
+                this.errorRegister = new Object(error)
         },
         clearData() {
             this.dataLogin = {};
             this.dataRegister= {};
             this.errorLogin = {};
             this.errorRegister = {};
+        },
+        close(){
+            this.clearData();
+            this.toStore(false, 'loginModal');
+            this.toStore(false, 'registerModal');
+        },
+        storeMessage(type, mes){
+            this.$store.commit('error/setValue', {
+                name: 'data',
+                data: {type: type, text: mes, active: true}
+            });
         }
-    }
+    },
+    destroyed(){
+        document.body.style.overflowY = 'scroll'
+    },
+
 }

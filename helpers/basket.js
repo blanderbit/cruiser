@@ -1,5 +1,5 @@
+var cookie = require('cookie');
 export class Basket {
-
     static addThing(item){
         let all_data = this.getAllThing('basket-data');
         all_data.push(item);
@@ -8,7 +8,7 @@ export class Basket {
 
     static getAllThing(){
         try {
-            return JSON.parse(localStorage.getItem('basket-data')) || []
+            return JSON.parse(cookie.parse(document.cookie)['basket-data']) || []
         } catch (e){
             return []
         }
@@ -32,10 +32,8 @@ export class Basket {
     }
 
     static setAllData(all_data){
-        localStorage.setItem(
-            'basket-data',
-            JSON.stringify(all_data)
-        )
+        let allCookie = cookie.serialize('basket-data', JSON.stringify(all_data));
+        document.cookie = allCookie
     }
 
     static getThingByIndex(id){
@@ -48,5 +46,4 @@ export class Basket {
         data && data[index] ? data.splice(index, 1, item) : null;
         this.setAllData(data)
     }
-
 }
