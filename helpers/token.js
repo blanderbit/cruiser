@@ -1,8 +1,21 @@
+import * as cookie from "cookie";
+
 export class Token {
-    static setToken (data){
-        localStorage.setItem('token', data)
+    self = null;
+    constructor(data){
+        this.self = data
     }
-    static getToken (){
-       return localStorage.getItem('token')
+
+    setToken (data){
+        let COOKIE = cookie.parse(document.cookie);
+        !COOKIE['token'] && (COOKIE['token'] = data);
+        document.cookie = Object.keys(COOKIE).forEach(item =>  document.cookie = cookie.serialize(item, COOKIE[item]));
+    }
+    getToken (){
+       try {
+           return cookie.parse(document.cookie)['token']
+       } catch (e){
+           return self.getters['']
+       }
     }
 }

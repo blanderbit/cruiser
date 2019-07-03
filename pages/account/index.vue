@@ -26,6 +26,8 @@
     import tabComponentAccount from "../../components/accounts/tabComponentAccount/index"
     import accordeon from "../../components/accounts/accordeon/index"
     import personalData from "../../components/accounts/personal-data/index"
+    import * as cookie from "cookie";
+    import {Token} from "../../helpers/token";
 
     export default {
         components: {
@@ -41,7 +43,8 @@
         data() {
             return {
                 tabs: ['ORDER HISTORY', 'PERSONAL', 'CARS', 'SAVED SEARCHES'],
-                currentCardIndexUp: 0
+                currentCardIndexUp: 0,
+                TOKEN: new Token(this.$store)
             }
         },
         mounted(){
@@ -52,7 +55,7 @@
                 this[type] = index
             },
             isAutorize(){
-                !localStorage.getItem('token') && this.$router.push('/')
+                !this.TOKEN.getToken() && this.$router.push('/')
             }
         },
         destroyed() {

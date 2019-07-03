@@ -11,11 +11,15 @@ export default {
             settings: {
                 maxScrollbarLength: 60
             },
-            dataLogin: {},
+            dataLogin: {
+                email:'yarik@gmail.com',
+                password:'2363796z'
+            },
             dataRegister: {},
             errorLogin: {},
             errorRegister: {},
-            checked: false
+            checked: false,
+            TOKEN: new Token(this.$store)
         }
     },
     computed: {
@@ -50,7 +54,7 @@ export default {
             if(error_boolean) Auth.authLogin(this.dataLogin)
                 .then(res => {
                     if(res.body.success) {
-                        Token.setToken(res.body.data.token);
+                        this.TOKEN.setToken(res.body.data.token);
                         this.$store.dispatch('auth/actionValue', {
                             name: 'loginModal',
                             data: false

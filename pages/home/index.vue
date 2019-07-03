@@ -53,8 +53,19 @@
     import * as cookie from "cookie";
 
     export default {
-        fetch({req}){
-              console.log(cookie.parse(req.headers.cookie))
+        fetch({req, store}){
+            if(req && req.headers && req.headers.cookie) {
+                const data = cookie.parse(req.headers.cookie);
+                console.log(data);
+                data['token'] && store.dispatch('cookie/action_cookie',{
+                    name: 'token',
+                    data: data['token']
+                });
+                data['basket-data'] && store.dispatch('cookie/action_cookie',{
+                    name: 'basket',
+                    data: JSON.parse(data['basket-data'])
+                })
+            }
         },
         name: "index",
         components:{

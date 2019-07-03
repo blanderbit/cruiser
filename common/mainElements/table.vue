@@ -130,7 +130,8 @@
         data() {
             return {
                 position: null,
-                data: null
+                data: null,
+                BASKET: new Basket(this.$store)
             }
         },
         watch: {
@@ -175,7 +176,7 @@
                             item.warehousesNumber = index + 1
                         }
 
-                        const basketContainer = Basket.getThingByIndex(item && item.unique_hashes);
+                        const basketContainer = this.BASKET.getThingByIndex(item && item.unique_hashes);
                         item.qty = basketContainer &&
                         basketContainer.basket &&
                         basketContainer.basket.qty ? basketContainer.basket.qty : item.qty ? item.qty : 0;
@@ -208,12 +209,12 @@
                 if (!data.available) return this.toStore('error', 'Not available parts');
                 if (data.qty == data.available && operation == '+') return this.toStore('red', 'Not available parts');
                 if (data.qty == 0 && operation == '-') return this.toStore('error', 'Qty cannot be less than 0');
-                let basketContainer = Basket.getThingByIndex(data.unique_hashes);
+                let basketContainer = this.BASKET.getThingByIndex(data.unique_hashes);
                 const basketItemIndex = this.getLocalStorageFindIndexThings(data.unique_hashes);
                 data.qty = eval(`${data.qty} ${operation} 1`);
                 basketContainer&& basketContainer.basket && (basketContainer.basket.qty = data.qty);
                 if(basketContainer && basketItemIndex > -1){
-                    Basket.changeItemInBasketByIndex(basketItemIndex, basketContainer);
+                    this.BASKET.changeItemInBasketByIndex(basketItemIndex, basketContainer);
                     this.toStore('info', 'Successfully update basket');
                 }
             },
@@ -233,19 +234,22 @@
                 if (item.isBasket)  {
                     const index = this.getLocalStorageFindIndexThings(basketItem.basket.unique_hashes);
                     const activeRemove = index > -1;
-                    activeRemove && Basket.deleteThing(index);
+                    activeRemove && this.BASKET.deleteThing(index);
                     this.mainData = this.newData(this.mainData);
                     if(activeRemove) return this.toStore('info', 'Successfully removed from the basket');
                 }
-                Basket.addThing(basketItem);
+                this.BASKET.addThing(basketItem);
                 this.toStore('info', 'Successfully added to basket');
                 this.mainData = this.newData(this.mainData)
             },
 
-            getLocalStorageThings: () => Basket.getAllThing(),
+            getLocalStorageThings () {
+               return this.BASKET.getAllThing()
+            },
 
-            getLocalStorageFindIndexThings: (id) => Basket.getIndexThing(id),
-
+            getLocalStorageFindIndexThings (id) {
+                return this.BASKET.getIndexThing(id)
+            },
             newData : (data) =>  {
                 try{
                     return JSON.parse(JSON.stringify(data))

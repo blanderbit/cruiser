@@ -3,6 +3,7 @@ import authPopub from './../authSmallPopub/index'
 import {Basket} from "../../../helpers/basket";
 import {mapGetters} from "vuex";
 import {Token} from "../../../helpers/token";
+import * as cookie from "cookie";
 export default {
     name: 'app-header',
     components: {
@@ -30,7 +31,9 @@ export default {
             searchText: '',
             countData: 0,
             activeRefresh: false,
-            openPopub: false
+            openPopub: false,
+            BASKET: new Basket(this.$store),
+            TOKEN:new Token(this.$store)
         }
     },
     created() {
@@ -71,7 +74,8 @@ export default {
             this.$router.history.current.name !== 'search' && this.$router.push(`/search?search=${this.searchText}`)
         },
         getCountBasket() {
-            return Basket.getAllThing() ? Basket.getAllThing().length : 0
+            const things = this.BASKET.getAllThing() || this.$store.getters['cookie/getAllThing'] || null;
+            return things ? things.length : 0
         },
         refreshDataInBasket(){
             this.countData = this.getCountBasket();
@@ -81,7 +85,7 @@ export default {
         },
         isAutorize(){
             try {
-                return localStorage.getItem('token')
+                return this.TOKEN.getToken()
             } catch (e) {
                 return null
             }

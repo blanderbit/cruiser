@@ -1,27 +1,34 @@
 var cookie = require('cookie');
 export class Basket {
-    static addThing(item){
+    self = null;
+    constructor(data){
+        this.self = data
+    }
+
+    addThing(item){
         let all_data = this.getAllThing('basket-data');
         all_data.push(item);
         return this.setAllData(all_data)
     }
 
-    static getAllThing(){
+    getAllThing(){
+        let DOC;
         try {
-            return JSON.parse(cookie.parse(document.cookie)['basket-data']) || []
+            DOC = document;
         } catch (e){
-            return []
+            return null;
         }
+        return JSON.parse(cookie.parse(DOC && DOC.cookie || '')['basket-data'] || '[]')
     }
 
-    static deleteThing(index){
-        let all_data = this.getAllThing('basket-data');
+    deleteThing(index){
+        let all_data = this.getAllThing();
         all_data.splice(index, 1);
         return this.setAllData(all_data)
     }
 
-    static getIndexThing(id){
-        let all_data = this.getAllThing('basket-data');
+    getIndexThing(id){
+        let all_data = this.getAllThing() || this.self.getters['cookie/getAllThing'];
         let indexReturn = -1;
         all_data.find((item, index) => {
             const search = item && item.basket && item.basket.unique_hashes == id;
@@ -31,18 +38,18 @@ export class Basket {
         return indexReturn
     }
 
-    static setAllData(all_data){
-        let allCookie = cookie.serialize('basket-data', JSON.stringify(all_data));
-        document.cookie = allCookie
+    setAllData(all_data){
+        document.cookie = cookie.serialize('basket-data', JSON.stringify(all_data));
     }
 
-    static getThingByIndex(id){
+    getThingByIndex(id){
         const index = this.getIndexThing(id);
-        return this.getAllThing() && index > -1? this.getAllThing()[index] : null
+        const getAllThing = this.getAllThing() || this.self.getters['cookie/getAllThing'];
+        return getAllThing && index > -1? getAllThing[index] : null
     }
 
-    static changeItemInBasketByIndex(index, item){
-        let data = this.getAllThing();
+    changeItemInBasketByIndex(index, item){
+        let data = this.getAllThing() || this.self.getters['cookie/getAllThing'];
         data && data[index] ? data.splice(index, 1, item) : null;
         this.setAllData(data)
     }

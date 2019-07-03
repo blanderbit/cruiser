@@ -7,13 +7,15 @@ export default {
     data() {
         return {
             data: [],
-            total: 0
+            total: 0,
+            BASKET: new Basket(this.$store)
         }
     },
     created() {
         this.getThings()
     },
     methods: {
+
         getThings() {
             this.total = 0;
             this.data = this.getLocalStorageThings() || [];
@@ -25,10 +27,12 @@ export default {
             this.total = this.total.toFixed(2)
         },
 
-        getLocalStorageThings: () => Basket.getAllThing(),
+        getLocalStorageThings () {
+            return this.BASKET.getAllThing() || this.$store.getters['cookie/getAllThing']
+        },
 
         deleteThingsInBasket(index) {
-            Basket.deleteThing(index);
+            this.BASKET.deleteThing(index);
             this.getThings();
             this.$store.commit('error/setValue', {
                 name: 'data',
@@ -36,6 +40,7 @@ export default {
             });
             this.$emit('refresh', true)
         },
+
         toRouter(data) {
             this.$router.push(`/products/${data.url}`)
         }
