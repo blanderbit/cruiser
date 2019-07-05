@@ -17,8 +17,10 @@
     "cookie-universal-nuxt": "^2.0.16",
     "nodejs-base64": "^1.0.3",
     "nuxt": "^2.0.0",
+    "vue-paginate": "^3.6.0",
     "vue-perfect-scrollbar": "^0.1.0",
     "vue-resource": "^1.5.1",
+    "vuejs-paginate": "^2.1.0",
     "vuetify": "^1.5.16"
   },
   "devDependencies": {

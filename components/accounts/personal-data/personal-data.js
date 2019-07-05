@@ -1,20 +1,28 @@
+import {mapGetters} from 'vuex'
 export default {
     name: 'tab-component',
     components: {},
-    props: ['tabs', 'propsCurrent', 'width'],
+    props: [],
     data() {
         return {
-            active: 0
         }
     },
-    computed: {},
+    computed:{
+        newData(){
+            return JSON.parse(JSON.stringify(this.$store.getters['auth/get_user']));
+        }
+    },
     mounted() {
 
     },
     methods: {
-        activeTab(index){
-            this.active = index;
-            this.$emit(this.propsCurrent, index)
-        }
-    }
+        setUser(event, data, type){
+            data[type] = event.target.value;
+            this.$store.dispatch('auth/actionValue',{
+                name:'userData',
+                data:data
+            })
+        },
+        save(){}
+    },
 }

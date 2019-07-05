@@ -50,22 +50,17 @@
     import tab from '../../common/mainElements/tabComponent/index'
     import card from '../../common/mainElements/card/index'
     import firstElement from '../../components/homePage/first-element'
-    import * as cookie from "cookie";
+    import {CookieHelper} from "../../helpers/cookie";
 
     export default {
         fetch({req, store}){
-            if(req && req.headers && req.headers.cookie) {
-                const data = cookie.parse(req.headers.cookie);
-                console.log(data);
-                data['token'] && store.dispatch('cookie/action_cookie',{
-                    name: 'token',
-                    data: data['token']
-                });
-                data['basket-data'] && store.dispatch('cookie/action_cookie',{
-                    name: 'basket',
-                    data: JSON.parse(data['basket-data'])
-                })
-            }
+            const isHeader = req && req.headers && req.headers.cookie;
+            const options =  {
+                store: store,
+                req: req
+            };
+            return CookieHelper.setCookieDataInStore(isHeader, options)
+                .then(res => console.log(res))
         },
         name: "index",
         components:{

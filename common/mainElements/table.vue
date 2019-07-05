@@ -80,7 +80,7 @@
                 v-if="(!from && !to) || this.position.indexOf(7) > -1">
                 <div class="w5 warehouse-container item-day "
                      v-for="(item) in mainData.data">
-                    {{item.warehousesDay}}
+                    {{item.warehousesDay ? item.warehousesDay : ''}}
                     <div :style="!item.warehousesDay ? {opacity:0}:''" v-if="!item.warehousesDay">
                         null
                     </div>
@@ -136,7 +136,7 @@
         },
         watch: {
             'snackbar'() {
-                // this.mainData = {name:'refresh'}
+                this.mainData = null
             }
         },
         computed: {
@@ -169,6 +169,7 @@
                         item.isBasket = arrayId.indexOf(item.unique_hashes) > -1;
                         array.splice(item.warehousesNumber - 1, 1, item)
                     });
+
                     product && product.data && (product.data = array.map((item, index) => {
                         if (!item.active) {
                             item.available = 0;
@@ -197,6 +198,7 @@
         },
         methods: {
             dataDayFormat(data) {
+                if(!data) return '';
                 const statics = data;
                 const regex = /\d+/g;
                 data && (data = data.match(regex));

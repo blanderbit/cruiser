@@ -61,7 +61,7 @@ export default {
                         });
                         this.$router.push(`/account?user=${res.body.data.token}`)
                     }
-                })
+                });
             else {
                 this.errorLogin = error
             }

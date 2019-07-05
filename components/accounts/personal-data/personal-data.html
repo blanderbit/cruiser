@@ -2,37 +2,61 @@
     <div class="personal-data-item">
         <div>
             <label>First Name:</label>
-            <input type="text" placeholder="This is a required field">
+            <input type="text"
+                   :value="newData.first_name"
+                   @input="setUser($event, newData, 'first_name')"
+                   placeholder="This is a required field">
         </div>
         <div>
             <label>Street:</label>
-            <input type="text" placeholder="This is a required field">
+            <input type="text"
+                   :value="newData.street_address"
+                   placeholder="This is a required field"
+                   @input="setUser($event, newData, 'street_address')" >
         </div>
         <div>
             <label>City:</label>
-            <input type="text" placeholder="This is a required field">
+            <input type="text"
+                   :value="newData.city"
+                   placeholder="This is a required field"
+                   @input="setUser($event, newData, 'city')">
         </div>
         <div>
             <label>Country:</label>
-            <input type="text" placeholder="This is a required field">
+            <input type="text"
+                   :value="newData.country"
+                   placeholder="This is a required field"
+                   @input="setUser($event, newData, 'country')">
         </div>
     </div>
     <div class="personal-data-item">
         <div>
             <label>Last Name:</label>
-            <input type="text" placeholder="This is a required field">
+            <input :value="newData.last_name"
+                   type="text"
+                   placeholder="This is a required field"
+                   @input="setUser($event, newData, 'last_name')">
         </div>
         <div>
             <label>Street 2:</label>
-            <input type="text" placeholder="This is a required field">
+            <input type="text"
+                   :value="newData.street_address_two"
+                   placeholder="This is a required field"
+                   @input="setUser($event, newData, 'street_address_two')">
         </div>
         <div>
             <label>State:</label>
-            <input type="text" placeholder="This is a required field">
+            <input type="text"
+                   :value="newData.state"
+                   placeholder="This is a required field"
+                   @input="setUser($event, newData, 'state')">
         </div>
         <div>
             <label>Phone:</label>
-            <input type="text" placeholder="This is a required field">
+            <input type="text"
+                   :value="newData.phone"
+                   placeholder="This is a required field"
+                   @input="setUser($event, newData, 'phone')">
         </div>
     </div>
 </div>

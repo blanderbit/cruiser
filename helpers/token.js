@@ -15,7 +15,7 @@ export class Token {
        try {
            return cookie.parse(document.cookie)['token']
        } catch (e){
-           return self.getters['']
+           return this.self.getters['cookie/getToken']
        }
     }
 }

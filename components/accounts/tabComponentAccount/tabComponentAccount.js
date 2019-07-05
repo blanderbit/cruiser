@@ -1,10 +1,10 @@
 export default {
     name: 'tab-component',
     components: {},
-    props: ['tabs', 'propsCurrent', 'width'],
+    props: ['tabs', 'propsCurrent', 'width', 'active'],
     data() {
         return {
-            active: 0
+
         }
     },
     computed: {},
@@ -13,7 +13,6 @@ export default {
     },
     methods: {
         activeTab(index){
-            this.active = index;
             this.$emit(this.propsCurrent, index)
         }
     }

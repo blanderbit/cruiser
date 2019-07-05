@@ -14,16 +14,16 @@ export default {
     data() {
         return {
             menu_page: [
-                'PRODUCTS',
-                'ABOUT US',
-                'Number',
-                'FAQ',
-                'CUSTOMER’S PROJECTS',
-                'POLICIES',
-                'WARRANTY',
-                'NEWS',
-                'CONTACT US',
-                'BRANDS'
+                {name:'PRODUCTS', path:'products'},
+                {name:'ABOUT US', path:'products'},
+                {name:'Number', path:'products'},
+                {name:'FAQ', path:'products'},
+                {name:'CUSTOMER’S PROJECTS', path:'products'},
+                {name:'POLICIES', path:'products'},
+                {name:'WARRANTY', path:'products'},
+                {name:'NEWS', path:'products'},
+                {name:'CONTACT US', path:'products'},
+                {name:'BRANDS', path:'products'}
             ],
             isMenu: false,
             isBeforeMenu: false,
@@ -33,7 +33,7 @@ export default {
             activeRefresh: false,
             openPopub: false,
             BASKET: new Basket(this.$store),
-            TOKEN:new Token(this.$store)
+            TOKEN: new Token(this.$store)
         }
     },
     created() {
@@ -87,6 +87,7 @@ export default {
             try {
                 return this.TOKEN.getToken()
             } catch (e) {
+                console.log(e)
                 return null
             }
         }

@@ -33,24 +33,28 @@
                 @refresh="refreshDataInBasket($event)">
             </basket>
         </div>
-        <div class="menu-other profile-menu pointer" v-if="!isAutorize()" @click.self="openPopub = !openPopub">
+        <div class="menu-other profile-menu pointer"
+             v-if="!isAutorize()"
+             @click.self="(openPopub = !openPopub,isMenu = false)">
             <app-auth-popub
                 id="popub-auth"
                 :class="openPopub && 'active'"
                 @closeSmallPopub="openPopub = false">
             </app-auth-popub>
         </div>
-        <div class="menu-other profile-menu pointer" v-if="isAutorize()" @click.self="toAccount()"></div>
+        <div class="menu-other profile-menu pointer"
+             v-if="isAutorize()"
+             @click.self="toAccount()"></div>
     </div>
     <div class="menu-page" v-if="isMenu">
         <div class="menu-page-container">
-            <router-link
-                class="link"
+            <a
+                class="link pointer"
                 v-for="item in menu_page"
-                :to="item"
-                :key="item">
-                {{item}}
-            </router-link>
+                @click.prevent="(isMenu = false, $router.push(item.path))"
+                :key="item.name">
+                {{item.name}}
+            </a>
         </div>
     </div>
 </div>
