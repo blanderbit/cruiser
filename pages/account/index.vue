@@ -56,7 +56,6 @@
         fetch({store,req}) {
             const isHeader = req && req.headers && req.headers.cookie;
             const token= store.getters['cookie/getToken'];
-            console.log(token)
             const options = {
                 store: store,
                 req: req,
@@ -95,6 +94,9 @@
                 TOKEN: new Token(this.$store)
             }
         },
+        created(){
+            this.isAutorize()
+        },
         mounted() {
             document.body.addEventListener('mouseover', () => this.isAutorize())
         },
@@ -103,7 +105,13 @@
                 this[type] = index
             },
             isAutorize() {
-                !this.TOKEN.getToken() && this.$router.push('/')
+                if(!this.TOKEN.getToken()) {
+                this.$store.dispatch('cookie/action_cookie',{
+                        name: 'token',
+                        data: null
+                    });
+                this.$router.push('/')
+                }
             },
             saveData(){
                 const token = cookie.parse(document.cookie)['token'];
