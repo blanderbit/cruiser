@@ -53,22 +53,26 @@
     import * as cookie from "cookie";
 
     export default {
-        fetch({store, req}) {
+        fetch({store,req}) {
             const isHeader = req && req.headers && req.headers.cookie;
+            const token= store.getters['cookie/getToken'];
+            console.log(token)
             const options = {
                 store: store,
                 req: req,
                 get: 'token'
             };
+
             const getUserInServer = (token) => Auth.getUser(token)
                 .then(res => {
                     store.dispatch('auth/actionValue', {
                         name: 'userData',
                         data: res.body
-                    })
+                    });
                     return true
                 })
                 .catch(res => console.log(res));
+            if (!isHeader && token) return getUserInServer(token);
             return CookieHelper.setCookieDataInStore(isHeader, options, getUserInServer)
                 .then(res => console.log(res))
         },

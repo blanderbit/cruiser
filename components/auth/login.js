@@ -59,7 +59,12 @@ export default {
                             name: 'loginModal',
                             data: false
                         });
-                        this.$router.push(`/account?user=${res.body.data.token}`)
+                        this.$store.dispatch('cookie/action_cookie',{
+                            name: 'token',
+                            data: res.body.data.token
+                        });
+                        console.log(res.body.data.token)
+                        this.$router.push(`/account`)
                     }
                 });
             else {
