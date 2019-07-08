@@ -209,7 +209,7 @@
             toggleQty(data, operation) {
                 if (!data.active)    return this.toStore('error', 'Not available warehouse');
                 if (!data.available) return this.toStore('error', 'Not available parts');
-                if (data.qty == data.available && operation == '+') return this.toStore('red', 'Not available parts');
+                if (data.qty == data.available && operation == '+') return this.toStore('error', 'Not available parts');
                 if (data.qty == 0 && operation == '-') return this.toStore('error', 'Qty cannot be less than 0');
                 let basketContainer = this.BASKET.getThingByIndex(data.unique_hashes);
                 const basketItemIndex = this.getLocalStorageFindIndexThings(data.unique_hashes);
@@ -252,6 +252,7 @@
             getLocalStorageFindIndexThings (id) {
                 return this.BASKET.getIndexThing(id)
             },
+
             newData : (data) =>  {
                 try{
                     return JSON.parse(JSON.stringify(data))

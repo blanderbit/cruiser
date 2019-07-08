@@ -27,6 +27,37 @@ export default {
             this.total = this.total.toFixed(2)
         },
 
+        toggleQty(data, operation) {
+
+            if (!data.basket.active)    return this.toStore('error', 'Not available warehouse');
+            if (!data.basket.available) return this.toStore('error', 'Not available parts');
+            if (data.basket.qty == data.basket.available && operation == '+'){
+                return this.toStore('error', 'Not available parts');
+            }
+            if (data.basket.qty == 0 && operation == '-'){
+                return this.toStore('error', 'Qty cannot be less than 0');
+            }
+            let basketContainer = this.BASKET.getThingByIndex(data.basket.unique_hashes);
+            const basketItemIndex = this.getLocalStorageFindIndexThings(data.basket.unique_hashes);
+            data.basket.qty = eval(`${data.basket.qty} ${operation} 1`);
+            basketContainer&& basketContainer.basket && (basketContainer.basket.qty = data.basket.qty);
+            if(basketContainer && basketItemIndex > -1){
+                this.BASKET.changeItemInBasketByIndex(basketItemIndex, basketContainer);
+                this.toStore('info', 'Successfully update basket');
+            }
+        },
+
+        getLocalStorageFindIndexThings (id) {
+            return this.BASKET.getIndexThing(id)
+        },
+
+        toStore(type, mes) {
+            this.$store.commit('error/setValue', {
+                name: 'data',
+                data: {type: type, text: mes, active: true}
+            });
+        },
+
         getLocalStorageThings () {
             return this.BASKET.getAllThing() || this.$store.getters['cookie/getAllThing']
         },
@@ -44,5 +75,6 @@ export default {
         toRouter(data) {
             this.$router.push(`/products/${data.url}`)
         }
+
     }
 }

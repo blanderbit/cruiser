@@ -87,7 +87,6 @@ export default {
             try {
                 return this.TOKEN.getToken()
             } catch (e) {
-                console.log(e)
                 return null
             }
         }

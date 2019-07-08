@@ -6,6 +6,7 @@
                 <tab-component
                     :width="187"
                     :tabs="tabCards"
+                    :default="currentCardIndex"
                     :propsCurrent="'currentCardIndex'"
                     @currentCardIndex="getIndexCard($event,'currentCardIndex')">
                 </tab-component>
@@ -13,13 +14,10 @@
         </div>
         <div class="container-cards">
             <div>
-                <card-component
-                    style="margin-right: 32px"
-                    v-if="cardsTest.id == currentCardIndex"
-                    v-for="(item, index) in cardsTest.items"
-                    :key="`${index}`"
-                    :item="item">
-                </card-component>
+                <carousel
+                    :interval="10000"
+                    :data="setData">
+                </carousel>
             </div>
         </div>
         <div class="about-cruiser-addiction">
@@ -48,9 +46,9 @@
 
 <script>
     import tab from '../../common/mainElements/tabComponent/index'
-    import card from '../../common/mainElements/card/index'
     import firstElement from '../../components/homePage/first-element'
     import {CookieHelper} from "../../helpers/cookie";
+    import {Products} from "../../api/products";
 
     export default {
         fetch({req, store}){
@@ -62,11 +60,27 @@
             return CookieHelper.setCookieDataInStore(isHeader, options)
                 .then(res => console.log(res))
         },
+        asyncData(){
+             return Products.getRandomParts().then(res => ({items: res.body}))
+        },
         name: "index",
         components:{
             "tab-component": tab,
-            "card-component": card,
             "carusel-component": firstElement,
+        },
+        computed:{
+            setData(){
+                return [1,2,3].map(count => {
+                    switch (count) {
+                        case 1: const data1 = this.setHtmlCard(0);
+                        return `<div class="containerCard">${data1}</div>`;
+                        case 2: const data2 = this.setHtmlCard(0);
+                            return `<div class="containerCard">${data2}</div>`;
+                        case 3: const data3 = this.setHtmlCard(0);
+                            return `<div class="containerCard">${data3}</div>`;
+                    }
+                })
+            }
         },
         data(){
             return{
@@ -83,7 +97,7 @@
                     'Online catalogue',
                     'BEST PRICES'
                 ],
-                currentCardIndex: 0,
+                currentCardIndex: Math.floor(Math.random() * 8),
                 tabIndexAbout: 0,
                 cardsTest:{
                     id:0,
@@ -146,10 +160,59 @@
                 }
             }
         },
+        mounted(){
+           this.$nextTick(() => this.addClick())
+        },
         methods:{
             getIndexCard(index, type){
-                this[type] = index
+                this.getRandomParts().then(() => {
+                    this.removeClick();
+                    this.addClick();
+                    this[type] = index;
+                })
+            },
+            getRandomParts(){
+                return Products.getRandomParts().then(res => this.items = res.body)
+            },
+            addCard(event){
+                const clickData = this.items
+                    .find(data => data.unique_hash === event.target.previousElementSibling.textContent);
+                console.log(clickData)
+            },
+            setHtmlCard(count){
+                return [...this.items].splice(count,4).map((item, index) => {
+                    let data = {...item};
+                    return `<div class="card" >
+                                <div class="card-image"></div>
+                                <div class="card-description">
+                                    ${data.description_english}
+                                </div>
+                                <div class="card-star">
+                                <app-star :count="2"></app-star>
+                                <!--data.starCount-->
+                                </div>
+                                <hr class="card-line">
+                                <div class="card-price">
+                                    <span>$</span>${data.price}
+                                </div>
+                                <div class="disabledHash" id="customId${index}">${data.unique_hash}</div>
+                                <button class="button-card-add all-center">add to card</button>
+                            </div>`
+                    }).join(' ')
+            },
+            addClick(){
+                document
+                    .querySelectorAll('.button-card-add')
+                    .forEach(item => item.addEventListener('click',this.addCard));
+            },
+            removeClick(){
+                document
+                    .querySelectorAll('.button-card-add')
+                    .forEach(item => item.removeEventListener('click',this.addCard));
             }
+        },
+        destroyed() {
+            this.removeClick()
         }
     }
 </script>
@@ -230,7 +293,5 @@
         top: 18px;
         right: 300px;
     }
-    .card:last-child{
-        margin-right: 0!important;
-    }
+
 </style>

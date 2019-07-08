@@ -63,7 +63,6 @@ export default {
                             name: 'token',
                             data: res.body.data.token
                         });
-                        console.log(res.body.data.token)
                         this.$router.push(`/account`)
                     }
                 });

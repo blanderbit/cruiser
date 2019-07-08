@@ -161,7 +161,31 @@
     import table from "../../../common/mainElements/table";
     import {Search} from "../../../api/search";
     import { base64encode, base64decode } from 'nodejs-base64';
+    import {CookieHelper} from "../../../helpers/cookie";
+    import {Auth} from "../../../api/auth";
     export default {
+        fetch({store,req}){
+            const isHeader = req && req.headers && req.headers.cookie;
+            const token= store.getters['cookie/getToken'];
+            const options = {
+                store: store,
+                req: req,
+                get: 'token'
+            };
+
+            const getUserInServer = (token) => Auth.getUser(token)
+                .then(res => {
+                    store.dispatch('auth/actionValue', {
+                        name: 'userData',
+                        data: res.body
+                    });
+                    return true
+                })
+                .catch(res => console.log(res));
+            if (!isHeader && token) return getUserInServer(token);
+            return CookieHelper.setCookieDataInStore(isHeader, options, getUserInServer)
+                .then(res => console.log(res))
+        },
         async asyncData({route}){
             const {data} = await Search.getSearchItem(JSON.parse(base64decode(route.params.product)));
             return {item: data}
@@ -172,7 +196,7 @@
         },
         computed:{
             set_data(){
-                return [1,2,3,4].map(item => {
+                return [1,2,3,4].map(() => {
                     return  `<div class="container-carousel" style="background: #ECF0F3;">
                                    <div class="test-card" v-for="ite in [1,2,3,4]">
                                           <div class="picture-description">

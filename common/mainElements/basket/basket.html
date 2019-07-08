@@ -29,9 +29,15 @@
             </div>
             <div class="item-shop-basket-quantity">
                 <div class="item-shop-basket-quantity-count">
-                    <div class="all-center item-shop-basket-count pointer">+</div>
+                    <div class="all-center item-shop-basket-count pointer"
+                         @click="toggleQty(item, '+')">
+                         +
+                    </div>
                     <div  class="quantity">{{item.basket && item.basket.qty}}</div>
-                    <div class="all-center item-shop-basket-count pointer">-</div>
+                    <div class="all-center item-shop-basket-count pointer"
+                         @click="toggleQty(item, '-')">
+                         -
+                    </div>
                 </div>
                 <div class="item-shop-basket-count-total">
                     ${{item.basket && item.basket.prices}}

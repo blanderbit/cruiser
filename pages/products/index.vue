@@ -36,7 +36,10 @@
                         <div>{{item.brand_name}}</div>
                     </div>
                     <div class="post post-2">
-                        <div class="item">{{item.part_number}}</div>
+                        <div class="item pointer"
+                             @click="toOneProduct(item.brand_name, item.part_number)">
+                            {{item.part_number}}
+                        </div>
                     </div>
                     <div class="post post-3">
                         <div class="item">
@@ -44,7 +47,7 @@
                         </div>
                     </div>
                     <div class="post post-4">
-                        <div class="item">{{item.description_english}}</div>
+                        <div class="item">${{item.price}}</div>
                     </div>
                     <div class="post post-5">
                         <div class="item">{{item.qty}}</div>
@@ -79,13 +82,37 @@
 
 <script>
     import {Products} from "../../api/products";
-    import { base64encode, base64decode } from 'nodejs-base64';
+    import { base64encode } from 'nodejs-base64';
+    import {CookieHelper} from "../../helpers/cookie";
+    import {Auth} from "../../api/auth";
     if (process.client) {
         var Vue = require('vue');
-        var Paginate = require('vuejs-paginate')
+        var Paginate = require('vuejs-paginate');
         Vue.component('paginate', Paginate);
     }
     export default {
+        fetch({store,req}){
+            const isHeader = req && req.headers && req.headers.cookie;
+            const token= store.getters['cookie/getToken'];
+            const options = {
+                store: store,
+                req: req,
+                get: 'token'
+            };
+
+            const getUserInServer = (token) => Auth.getUser(token)
+                .then(res => {
+                    store.dispatch('auth/actionValue', {
+                        name: 'userData',
+                        data: res.body
+                    });
+                    return true
+                })
+                .catch(res => console.log(res));
+            if (!isHeader && token) return getUserInServer(token);
+            return CookieHelper.setCookieDataInStore(isHeader, options, getUserInServer)
+                .then(res => console.log(res))
+        },
         async asyncData(){
             return Products.getAllProducts().then(res => {
                 return {paginatedata:res.body}

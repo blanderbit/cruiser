@@ -1,15 +1,15 @@
 export default {
     name: 'tab-component',
     components: {},
-    props: ['tabs', 'propsCurrent', 'width'],
+    props: ['tabs', 'propsCurrent', 'width', 'default'],
     data() {
         return {
             active: 0
         }
     },
     computed: {},
-    mounted() {
-
+    created() {
+        this.default && (this.active = this.default)
     },
     methods: {
         activeTab(index){
