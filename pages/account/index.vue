@@ -18,22 +18,9 @@
             </edit-data>
             <cars v-if="currentCardIndexUp == 2"></cars>
             <saved-search v-if="currentCardIndexUp == 3"></saved-search>
-            <tab-component-account
-                    class="tabDown"
-                    :tabs="tabs"
-                    :active="currentCardIndexDown"
-                    :propsCurrent="'currentCardIndexDown'"
-                    @currentCardIndexDown="getIndexCard($event,'currentCardIndexDown')">
-            </tab-component-account>
-            <accordeont-account v-if="currentCardIndexDown == 0"></accordeont-account>
-            <edit-data
-                    v-if="currentCardIndexDown == 1">
-            </edit-data>
-            <cars               v-if="currentCardIndexDown == 2"></cars>
-            <saved-search       v-if="currentCardIndexDown == 3"></saved-search>
-            <div class="action" v-if="currentCardIndexDown == 1">
+            <div class="action">
                 <div class="pointer" @click="saveData()">SAVE</div>
-                <div class="pointer">Cancel</div>
+                <div class="pointer" @click="logout()">Cancel</div>
             </div>
 
         </div>
@@ -90,7 +77,6 @@
             return {
                 tabs: ['ORDER HISTORY', 'PERSONAL', 'CARS', 'SAVED SEARCHES'],
                 currentCardIndexUp: 0,
-                currentCardIndexDown: 1,
                 TOKEN: new Token(this.$store)
             }
         },
@@ -106,17 +92,24 @@
             },
             isAutorize() {
                 if(!this.TOKEN.getToken()) {
-                this.$store.dispatch('cookie/action_cookie',{
-                        name: 'token',
-                        data: null
-                    });
-                this.$router.push('/')
+                    this.$store.dispatch('cookie/action_cookie',{
+                            name: 'token',
+                            data: null
+                        });
+                    this.$router.push('/')
                 }
             },
             saveData(){
                 const token = cookie.parse(document.cookie)['token'];
                 Auth.saveUser(this.$store.getters['auth/get_user'],token )
-
+            },
+            logout(){
+                this.$store.dispatch('cookie/action_cookie',{
+                    name: 'token',
+                    data: ''
+                });
+                this.TOKEN.deleteToken();
+                this.$router.push('/');
             }
         },
         destroyed() {
