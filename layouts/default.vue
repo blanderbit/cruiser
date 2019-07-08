@@ -520,7 +520,9 @@
     .button-card-add:active {
         background: #CA4635;
     }
-
+    .button-card-add.active{
+        background: #8BC240;
+    }
     .card-star {
         margin-top: 13px;
     }

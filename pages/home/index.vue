@@ -49,6 +49,7 @@
     import firstElement from '../../components/homePage/first-element'
     import {CookieHelper} from "../../helpers/cookie";
     import {Products} from "../../api/products";
+    import {Basket} from "../../helpers/basket";
 
     export default {
         fetch({req, store}){
@@ -69,17 +70,33 @@
             "carusel-component": firstElement,
         },
         computed:{
-            setData(){
-                return [1,2,3].map(count => {
-                    switch (count) {
-                        case 1: const data1 = this.setHtmlCard(0);
-                        return `<div class="containerCard">${data1}</div>`;
-                        case 2: const data2 = this.setHtmlCard(0);
-                            return `<div class="containerCard">${data2}</div>`;
-                        case 3: const data3 = this.setHtmlCard(0);
-                            return `<div class="containerCard">${data3}</div>`;
-                    }
-                })
+            setData:{
+                set(){
+                    this.set_Data = [1,2,3].map(count => {
+                        switch (count) {
+                            case 1: const data1 = this.setHtmlCard(0);
+                                return `<div class="containerCard">${data1}</div>`;
+                            case 2: const data2 = this.setHtmlCard(0);
+                                return `<div class="containerCard">${data2}</div>`;
+                            case 3: const data3 = this.setHtmlCard(0);
+                                return `<div class="containerCard">${data3}</div>`;
+                        }
+                    });
+
+                },
+                get(){
+                    return this.set_Data
+                }
+            }
+        },
+        watch:{
+            'setData'(v){
+                setTimeout(() => {
+                    try {
+                        this.removeClick();
+                        this.addClick();
+                    } catch (e){}
+                },0)
             }
         },
         data(){
@@ -92,6 +109,7 @@
                     'recent products',
                     'feature products'
                 ],
+                set_Data:[],
                 tabAbout:[
                     'Easy to USE',
                     'Online catalogue',
@@ -99,6 +117,8 @@
                 ],
                 currentCardIndex: Math.floor(Math.random() * 8),
                 tabIndexAbout: 0,
+                BASKET: new Basket(this.$store),
+                allProducts:[],
                 cardsTest:{
                     id:0,
                     items:[
@@ -160,6 +180,10 @@
                 }
             }
         },
+        created(){
+            this.allProducts = this.getProducts();
+            this.setData = []
+        },
         mounted(){
            this.$nextTick(() => this.addClick())
         },
@@ -175,9 +199,53 @@
                 return Products.getRandomParts().then(res => this.items = res.body)
             },
             addCard(event){
-                const clickData = this.items
+                const currentCard = this.items
                     .find(data => data.unique_hash === event.target.previousElementSibling.textContent);
-                console.log(clickData)
+                if(currentCard){
+                    if (this.allProducts.indexOf(currentCard.unique_hash) > -1)  {
+                        const index = this.getLocalStorageFindIndexThings(currentCard.unique_hash);
+                        const activeRemove = index > -1;
+                        activeRemove && this.BASKET.deleteThing(index);
+                        this.allProducts = this.getProducts();
+                        this.setData = [];
+                        if(activeRemove) return this.toStore('info', 'Successfully removed from the basket');
+                    }
+                    const regex = /\d+/g;
+                    const warehouses = currentCard.warehouse ? currentCard.warehouse.split(' ') : [];
+                    currentCard.basket = {
+                        active: true,
+                        available: currentCard.qty,
+                        qty: 1,
+                        prices: currentCard.price,
+                        unique_hashes: currentCard.unique_hash,
+                    };
+
+                    if(!currentCard.basket.warehousesNumber) {
+                        currentCard.basket.warehousesNumber = warehouses[0] && warehouses[0].match(regex);
+                        currentCard.basket.warehousesNumber = !currentCard.basket.warehousesNumber ? 1
+                            : currentCard.basket.warehousesNumber[0];
+                    }
+                    !currentCard.basket.warehousesDay &&
+                    (currentCard.basket.warehousesDay = this.dataDayFormat(warehouses[1]));
+
+                    if (!currentCard.basket.active)    return this.toStore('error', 'Not available warehouse');
+                    if (!currentCard.basket.available) return this.toStore('error', 'Not available parts');
+                    if (currentCard.basket.qty < 1) return this.toStore('error', 'Not available parts');
+                    this.BASKET.addThing(currentCard);
+                    this.toStore('info', 'Successfully added to basket');
+                    this.allProducts = this.getProducts();
+                    this.setData = [];
+                }
+
+            },
+            dataDayFormat(data) {
+                if(!data) return '';
+                const statics = data;
+                const regex = /\d+/g;
+                data && (data = data.match(regex));
+                data && (data = data[data.length - 1]);
+                if (data && data.indexOf(1) > -1) return `${statics} day`;
+                return `${statics} days`;
             },
             setHtmlCard(count){
                 return [...this.items].splice(count,4).map((item, index) => {
@@ -196,9 +264,19 @@
                                     <span>$</span>${data.price}
                                 </div>
                                 <div class="disabledHash" id="customId${index}">${data.unique_hash}</div>
-                                <button class="button-card-add all-center">add to card</button>
+                                <button
+                                     class="button-card-add all-center
+                                    ${this.allProducts.indexOf(data.unique_hash) > -1 && 'active'}">
+                                    add to card
+                                </button>
                             </div>`
                     }).join(' ')
+            },
+            toStore(type, mes) {
+                this.$store.commit('error/setValue', {
+                    name: 'data',
+                    data: {type: type, text: mes, active: true}
+                });
             },
             addClick(){
                 document
@@ -209,7 +287,15 @@
                 document
                     .querySelectorAll('.button-card-add')
                     .forEach(item => item.removeEventListener('click',this.addCard));
-            }
+            },
+            getProducts(){
+                return (this.BASKET.getAllThing() || [])
+                    .map(item => item && item.basket && item.basket.unique_hashes)
+                    .filter(item => item)
+            },
+            getLocalStorageFindIndexThings (id) {
+                return this.BASKET.getIndexThing(id)
+            },
         },
         destroyed() {
             this.removeClick()
