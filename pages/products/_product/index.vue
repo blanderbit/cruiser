@@ -6,7 +6,7 @@
                 <span>Products</span> /
                 <span class="link-active">NEW OEM TOYOTA LAND CRUISER 80 SERIES OR LEXUS LX450 AIR CLEA</span>
             </div>
-            <div class="header-container-one-product">
+            <div class="header-container-one-product" style="justify-content: space-between;">
                 <div class="container-photo">
                     <div class="main-photo">
                         <img src="./../../../assets/main-photo.png">
@@ -16,7 +16,7 @@
                         <div><img src="./../../../assets/main-photo.png"></div>
                     </div>
                 </div>
-                <div class="product-description">
+                <div class="product-description" style="width: 100%;">
                     <div>Brand:<span style="font-weight: bold">{{item.brand_name}}</span></div>
                     <div class="container-description">
                         <div class="container-description-text">

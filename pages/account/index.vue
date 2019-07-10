@@ -84,14 +84,15 @@
             this.isAutorize()
         },
         mounted() {
-            document.body.addEventListener('mouseover', () => this.isAutorize())
+            document.body.addEventListener('mouseover',  this.isAutorize())
         },
         methods: {
             getIndexCard(index, type) {
                 this[type] = index
             },
             isAutorize() {
-                if(!this.TOKEN.getToken()) {
+
+                if(!this.TOKEN.getToken()) {console.log(1233)
                     this.$store.dispatch('cookie/action_cookie',{
                             name: 'token',
                             data: null
@@ -103,17 +104,9 @@
                 const token = cookie.parse(document.cookie)['token'];
                 Auth.saveUser(this.$store.getters['auth/get_user'],token )
             },
-            logout(){
-                this.$store.dispatch('cookie/action_cookie',{
-                    name: 'token',
-                    data: ''
-                });
-                this.TOKEN.deleteToken();
-                this.$router.push('/');
-            }
         },
         destroyed() {
-            document.body.removeEventListener('mousemove', () => this.isAutorize())
+            document.body.removeEventListener('mousemove', this.isAutorize())
         }
     }
 </script>

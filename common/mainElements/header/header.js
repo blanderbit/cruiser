@@ -33,7 +33,7 @@ export default {
             activeRefresh: false,
             openPopub: false,
             BASKET: new Basket(this.$store),
-            TOKEN: new Token(this.$store)
+            TOKEN: new Token(this.$store),
         }
     },
     created() {
@@ -61,11 +61,13 @@ export default {
         }
     },
     methods: {
+
         toggleBasket(flag) {
             flag && this.isBasketOpen && this.$emit('getActiveBasket', !this.isBasketOpen);
             if (flag) return;
             this.$emit('getActiveBasket', !this.isBasketOpen)
         },
+
         changeValueSearch() {
             this.$store.commit('search/setValue', {
                 name: 'searchText',
@@ -73,22 +75,18 @@ export default {
             });
             this.$router.history.current.name !== 'search' && this.$router.push(`/search?search=${this.searchText}`)
         },
+
         getCountBasket() {
             const things = this.BASKET.getAllThing() || this.$store.getters['cookie/getAllThing'] || null;
             return things ? things.length : 0
         },
+
         refreshDataInBasket(){
             this.countData = this.getCountBasket();
         },
-        toAccount(){
-            this.isAutorize && this.$router.push('/account')
-        },
-        isAutorize(){
-            try {
-                return this.TOKEN.getToken()
-            } catch (e) {
-                return null
-            }
+
+        closeSmall (event){
+            this.openPopub = 1;
         }
     }
 }

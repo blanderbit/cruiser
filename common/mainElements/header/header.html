@@ -34,17 +34,14 @@
             </basket>
         </div>
         <div class="menu-other profile-menu pointer"
-             v-if="!isAutorize()"
-             @click.self="(openPopub = !openPopub,isMenu = false)">
+             @click="(openPopub = !openPopub,isMenu = false)">
             <app-auth-popub
                 id="popub-auth"
                 :class="openPopub && 'active'"
-                @closeSmallPopub="openPopub = false">
+                :openPopub="openPopub"
+                @closeSmallPopub="closeSmall($event)">
             </app-auth-popub>
         </div>
-        <div class="menu-other profile-menu pointer"
-             v-if="isAutorize()"
-             @click.self="toAccount()"></div>
     </div>
     <div class="menu-page" v-if="isMenu">
         <div class="menu-page-container">

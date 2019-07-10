@@ -50,7 +50,7 @@
     import {CookieHelper} from "../../helpers/cookie";
     import {Products} from "../../api/products";
     import {Basket} from "../../helpers/basket";
-
+    import { base64encode } from 'nodejs-base64';
     export default {
         fetch({req, store}){
             const isHeader = req && req.headers && req.headers.cookie;
@@ -231,6 +231,10 @@
                     if (!currentCard.basket.active)    return this.toStore('error', 'Not available warehouse');
                     if (!currentCard.basket.available) return this.toStore('error', 'Not available parts');
                     if (currentCard.basket.qty < 1) return this.toStore('error', 'Not available parts');
+                    currentCard.url = base64encode(JSON.stringify({
+                        brand: currentCard.brand_name,
+                        part_number: currentCard.part_number
+                    }))
                     this.BASKET.addThing(currentCard);
                     this.toStore('info', 'Successfully added to basket');
                     this.allProducts = this.getProducts();

@@ -443,7 +443,7 @@
         max-width: 254px;
         max-height: 400px;
         padding: 20px;
-        margin: 20px 0;
+        margin: 40px 0;
         margin-right: 24px;
         flex-direction: column;
         display: flex;
@@ -531,6 +531,7 @@
     }
     .containerCard{
         width: 100%;
+        padding: 0 20px;
         display: flex;
         background: white;
     }

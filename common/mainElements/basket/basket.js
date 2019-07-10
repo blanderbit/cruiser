@@ -19,11 +19,11 @@ export default {
         getThings() {
             this.total = 0;
             this.data = this.getLocalStorageThings() || [];
-            this.data.forEach(
-                item => item.basket &&
-                    item.basket.prices &&
-                    (this.total += Number(item.basket.prices) * (Number(item.basket.qty) || 1))
-            );
+            this.data.forEach(item => {
+                if(item.basket && item.basket.prices && item.basket.qty) {
+                    this.total += Number(item.basket.prices) * (Number(item.basket.qty))
+                }
+            });
             this.total = this.total.toFixed(2)
         },
 
@@ -45,6 +45,7 @@ export default {
                 this.BASKET.changeItemInBasketByIndex(basketItemIndex, basketContainer);
                 this.toStore('info', 'Successfully update basket');
             }
+            this.getThings()
         },
 
         getLocalStorageFindIndexThings (id) {

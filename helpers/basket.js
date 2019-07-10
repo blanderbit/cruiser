@@ -29,8 +29,9 @@ export class Basket {
 
     getIndexThing(id){
         let all_data = this.getAllThing() || this.self.getters['cookie/getAllThing'];
+        typeof all_data == 'string' && (all_data = JSON.parse(all_data));
         let indexReturn = -1;
-        if(!all_data) return indexReturn
+        if(!all_data && !Array.isArray(all_data)) return indexReturn;
         all_data.find((item, index) => {
             const search = item && item.basket && item.basket.unique_hashes == id;
             search && (indexReturn = index);
@@ -54,4 +55,5 @@ export class Basket {
         data && data[index] ? data.splice(index, 1, item) : null;
         this.setAllData(data)
     }
+
 }

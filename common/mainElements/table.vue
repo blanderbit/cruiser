@@ -118,7 +118,7 @@
 <script>
     import {Basket} from "../../helpers/basket";
     import {mapGetters} from "vuex";
-    import { base64encode, base64decode } from 'nodejs-base64';
+    import { base64encode } from 'nodejs-base64';
     export default {
         props: [
             'type',
