@@ -535,5 +535,123 @@
         display: flex;
         background: white;
     }
+
+    .styled-input-single {
+        position: relative;
+        padding: 0 0 7px 25px;
+        text-align: left;
+        margin-bottom: 23px;
+
+        label {
+            cursor: pointer;
+            margin: 0;
+            font-size: 14px;
+            font-weight: 500;
+
+            &:before,
+            &:after {
+                content: '';
+                position: absolute;
+                top: 65%;
+                background: #ECF0F3;
+                border-radius: 50%;
+            }
+
+            &:before {
+                left: 0;
+                border: 2px solid #BABABA;
+                width: 10px;
+                height: 10px;
+                margin: -15px 0 0;
+                background: #f7f7f7;
+                box-shadow: 0 0 1px #4876D0;
+            }
+
+            &:after {
+                left: 4px;
+                width: 6px;
+                top: 6px;
+                height: 6px;
+
+                opacity: 0;
+                background: #CA4635;
+                transform: translate3d(-40px, 0, 0) scale(0.5);
+                transition: opacity 0.25s ease-in-out, transform 0.25s ease-in-out;
+            }
+        }
+
+        input[type="radio"],
+        input[type="checkbox"] {
+            position: absolute;
+            top: 0;
+            left: -9999px;
+            visibility: hidden;
+
+            &:checked + label {
+                &:before {
+                }
+
+                &:after {
+                    transform: translate3d(0, 0, 0);
+                    opacity: 1;
+                }
+            }
+        }
+    }
+
+    .styled-input--square {
+        label {
+            margin: 0;
+
+            &:before,
+            &:after {
+                border-radius: 0;
+            }
+        }
+    }
+
+    .styled-input--rounded {
+        label {
+            &:before {
+                border-radius: 10px;
+            }
+
+            &:after {
+                border-radius: 6px;
+            }
+        }
+    }
+
+    .styled-input--diamond {
+        .styled-input-single {
+            padding-left: 45px;
+        }
+
+        label {
+            &:before,
+            &:after {
+                border-radius: 0;
+            }
+
+            &:before {
+                transform: rotate(45deg);
+            }
+        }
+
+        input[type="radio"],
+        input[type="checkbox"] {
+
+            &:checked + label {
+                &:after {
+                    transform: rotate(45deg);
+                    opacity: 1;
+                }
+            }
+        }
+    }
+
+    .select-result-simple {
+        margin-bottom: 20px;
+    }
 </style>
 

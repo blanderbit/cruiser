@@ -1,15 +1,21 @@
 <template>
     <section class="products">
         <div class="products-container">
-            <div class="link">
-                <span>Home</span> /
-                <span class="link-active"> Cart</span>
+            <div style="display: flex; justify-content: space-between; align-items: center">
+                <div class="link">
+                    <span>Home</span> /
+                    <span class="link-active"> Cart</span>
+                </div>
+                <div style="display: flex;" class="pointer" @click="$router.back()">
+                    <div class="button-continue-checkout-back-image"></div>
+                    <div class="button-continue-checkout button-continue-checkout-back">Continue shoping</div>
+                </div>
             </div>
             <div class="products-all-header">
-                <div @click="l()">Order summary</div>
+                <div>Order summary</div>
             </div>
             <div class="products-all">
-                <div class="table-products table-products-header">
+                <div class="table-products table-products-header" style="margin-bottom: 20px">
                     <div class="post post-1">
                         <div>Picture</div>
                     </div>
@@ -31,23 +37,24 @@
                 </div>
                 <div class="table-products table-products-items"
                      v-for="(item, index) in items" style="display: grid;">
-                    <div class="post post-1">
+                    <div class="post post-1 product-container">
                         <div>{{index + 1}}</div>
+                        <div class="product-image"></div>
                     </div>
-                    <div class="post post-2">
+                    <div class="post post-2 product-container">
                         <div class="item pointer">
                             {{item.brand_name}}
                         </div>
                     </div>
-                    <div class="post post-3">
+                    <div class="post post-3 product-container">
                         <div class="item">
                             {{item.description_english}}
                         </div>
                     </div>
-                    <div class="post post-4">
+                    <div class="post post-4 product-container">
                         <div class="item">${{item.basket.prices}}</div>
                     </div>
-                    <div class="post post-5" >
+                    <div class="post post-5 product-container" >
                         <div class="item item-qty">
                             <div class="all-center item-shop-basket-count pointer" @click="toggleQty(item, '-')">
                                 -
@@ -58,15 +65,134 @@
                             </div>
                         </div>
                     </div>
-                    <div class="post post-6">
+                    <div class="post post-6 product-container key-delete">
                         <div class="item">{{subtotal(item.basket && item.basket.unique_hashes)}}</div>
+                        <div class="icon-delete" @click="deleteThingsInBasket(index)"></div>
                     </div>
                 </div>
             </div>
             <div class="products-all-header products-all-total">
                 <div style="display: flex">
                     <div class="post-5" style="border-right: 2px solid white; width: 70px">{{getTotalQty}}pcs</div>
-                    <div class="post-6" style="width: 82px;">${{getTotalPrice}}</div>
+                    <div class="post-6" style="width: 125px;">${{getTotalPrice}}</div>
+                </div>
+            </div>
+            <div class="coupon-system">
+                <div class="title-coupon">USE COUPON CODE</div>
+                <div class="coupon-system-form">
+                    <input placeholder="Enter discount code" class="coupon-enter">
+                    <div class="button-add-coupon">Apply discount</div>
+                </div>
+            </div>
+            <div class="container-shipping">
+                <div class="shipping">
+                    <div style="font-weight: bold;font-size: 14px;">Shipping Methods</div>
+                    <div style="font-weight: bold;font-size: 10px;">to</div>
+                    <dropdown
+                            :options="arrayOfObjects"
+                            :selected="object"
+                            :updateOption="methodToRunOnSelect">
+                    </dropdown>
+                    <input style="width: 200px" placeholder="Enter Zip or postal code" class="coupon-enter">
+                </div>
+                <div class="shipping-checkbox table">
+                    <div class="postt">
+                        <div class="styled-input-single d-flex align-items-center" style="margin-left: 8px">
+                            <input type="radio" id="simple1" name="fieldset-1" v-model="simple1"/>
+                            <label for="simple1"></label>
+                        </div>
+                        <div class="image">
+
+                        </div>
+                        <div class="date">
+                            2 days
+                        </div>
+                        <div class="price">
+                            $32.99
+                        </div>
+                    </div>
+                    <div class="postt">
+                        <div class="styled-input-single d-flex align-items-center" style="margin-left: 8px">
+                            <input type="radio" id="simple2" name="fieldset-1" v-model="simple2"/>
+                            <label for="simple2"></label>
+                        </div>
+                        <div class="image">
+
+                        </div>
+                        <div class="date">
+                            2 days
+                        </div>
+                        <div class="price">
+                            $32.99
+                        </div>
+                    </div>
+                    <div class="postt">
+                        <div class="styled-input-single d-flex align-items-center" style="margin-left: 8px">
+                            <input type="radio" id="simple3" name="fieldset-1" v-model="simple3"/>
+                            <label for="simple3"></label>
+                        </div>
+                        <div class="image">
+
+                        </div>
+                        <div class="date">
+                            2 days
+                        </div>
+                        <div class="price">
+                            $32.99
+                        </div>
+                    </div>
+                    <div class="postt">
+                        <div class="styled-input-single d-flex align-items-center" style="margin-left: 8px">
+                            <input type="radio" id="simple4" name="fieldset-1" v-model="simple4"/>
+                            <label for="simple4"></label>
+                        </div>
+                        <div class="image">
+
+                        </div>
+                        <div class="date">
+                            2 days
+                        </div>
+                        <div class="price">
+                            $32.99
+                        </div>
+                    </div>
+                    <div class="postt">
+                        <div class="styled-input-single d-flex align-items-center" style="margin-left: 8px">
+                            <input type="radio" id="simple5" name="fieldset-1" v-model="simple5"/>
+                            <label for="simple5"></label>
+                        </div>
+                        <div class="image">
+
+                        </div>
+                        <div class="date">
+                            2 days
+                        </div>
+                        <div class="price">
+                            $32.99
+                        </div>
+                    </div>
+                    <div class="postt">
+                        <div class="styled-input-single d-flex align-items-center" style="margin-left: 8px">
+                            <input type="radio" id="simple6" name="fieldset-1" v-model="simple6"/>
+                            <label for="simple6"></label>
+                        </div>
+                        <div class="image">
+
+                        </div>
+                        <div class="date">
+                            2 days
+                        </div>
+                        <div class="price">
+                            $32.99
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="background: #DADADA;width: 100%;height: 1px; margin-bottom: 20px"></div>
+            <div class="all-total">
+                <div class="total-container">
+                    <div class="total">total:<span>${{getTotalPrice}}</span></div>
+                    <div class="button-continue-checkout pointer"  @click="$router.push('check-out')">continue to checkout</div>
                 </div>
             </div>
         </div>
@@ -74,13 +200,13 @@
 </template>
 
 <script>
-    import {Products} from "../../api/products";
-
     import {CookieHelper} from "../../helpers/cookie";
     import {Basket} from "../../helpers/basket";
+    import Dropdown from "../../common/Dropdown";
 
     export default {
         fetch({store,req}){
+
             const isHeader = req && req.headers && req.headers.cookie;
 
             const options = {
@@ -89,39 +215,108 @@
                 get: 'token'
             };
 
-            return CookieHelper.setCookieDataInStore(isHeader, options)
-                .then(res => console.log(res))
+            return CookieHelper.setCookieDataInStore(isHeader, options).then(res => console.log(res))
         },
-        components: {},
+        components: {
+            'dropdown': Dropdown,
+        },
         data() {
             return {
                 langs: ['JavaScript', 'PHP', 'HTML', 'CSS', 'Ruby', 'Python', 'Erlang'],
+                BASKET: new Basket(this.$store),
+                items:[],
+                arrayOfObjects: [{name:'2'}, {name:'3'},{name: '4'}],
+                object: {
+                    name: 'Select Country',
+                },
+                simple1:false,
+                simple2:false,
+                simple3:false,
+                simple4:false,
+                simple5:false,
+                simple6:false,
             }
         },
+
+        created(){
+            this.items = this.getItems()
+        },
+
         computed: {
-            items(){
-                const items = this.$store.getters['cookie/getAllThing'];
-                return  (typeof items == 'string' ? JSON.parse(items) : items) || []
-            },
+
             getTotalPrice() {
                 return this.sum(this.items, true)
             },
+
             getTotalQty(){
                 return this.sum(this.items, false)
             }
+
         },
         methods: {
+
             subtotal(hash){
                 if(!hash) return 0;
                 const data = this.items.find(item => item.basket && item.basket.unique_hashes === hash);
                 if(!data || !data.basket) return 0;
                 return  +data.basket.prices * data.basket.qty
             },
+
             sum(items, type){
                 return JSON.parse(JSON.stringify(items))
                     .map(item => type ? (+item.basket.prices * item.basket.qty ): item.basket.qty)
                     .reduce((a,b) => a + b)
-            }
+            },
+
+            toggleQty(data, operation) {
+
+                if (!data.basket.active)    return this.toStore('error', 'Not available warehouse');
+                if (!data.basket.available) return this.toStore('error', 'Not available parts');
+                if (data.basket.qty == data.basket.available && operation == '+'){
+                    return this.toStore('error', 'Not available parts');
+                }
+                if (data.basket.qty == 0 && operation == '-'){
+                    return this.toStore('error', 'Qty cannot be less than 0');
+                }
+                let basketContainer = this.BASKET.getThingByIndex(data.basket.unique_hashes);
+                const basketItemIndex = this.getLocalStorageFindIndexThings(data.basket.unique_hashes);
+                data.basket.qty = eval(`${data.basket.qty} ${operation} 1`);
+                basketContainer&& basketContainer.basket && (basketContainer.basket.qty = data.basket.qty);
+                if(basketContainer && basketItemIndex > -1){
+                    this.BASKET.changeItemInBasketByIndex(basketItemIndex, basketContainer);
+                    this.toStore('info', 'Successfully update basket');
+                }
+                this.items = this.getItems()
+            },
+
+            getLocalStorageFindIndexThings (id) {
+                return this.BASKET.getIndexThing(id)
+            },
+
+            toStore(type, mes) {
+                this.$store.commit('error/setValue', {
+                    name: 'data',
+                    data: {type: type, text: mes, active: true}
+                });
+            },
+
+            getItems(){
+                const items = this.BASKET.getAllThing() || this.$store.getters['cookie/getAllThing'];
+                return  (typeof items == 'string' ? JSON.parse(items) : items) || []
+            },
+
+            methodToRunOnSelect(payload) {
+                this.object = payload;
+            },
+
+            deleteThingsInBasket(index) {
+                this.BASKET.deleteThing(index);
+                this.$store.commit('error/setValue', {
+                    name: 'data',
+                    data: {type: 'red', text: 'Successfully removed from the basket', active: true}
+                });
+                this.items = this.getItems()
+            },
         }
     }
 </script>
@@ -160,7 +355,7 @@
         background: #e4e5e6!important;
     }
     .post {
-        height: 30px;
+        /*height: 30px;*/
         border-right: 1px solid #FFFFFF;
     }
 
@@ -174,7 +369,7 @@
         margin-bottom: 1px;
     }
     .table-products-items .post {
-        height: 40px;
+        /*height: 40px;*/
     }
 
     .table-products-items .post > div {
@@ -187,22 +382,22 @@
     }
 
     .post-1 {
-        width: 157px;
-        max-width: 157px;
+        width: 100px;
+        max-width: 100px;
         grid-area: post-1;
         grid-column: 1;
     }
 
     .post-2 {
-        width: 124px;
-        max-width: 124px;
+        width: calc(124px + 57px);
+        max-width: calc(124px + 57px);
         grid-area: post-2;
         grid-column: 2
     }
 
     .post-3 {
-        width: 470px;
-        max-width: 479px;
+        width: 430px;
+        max-width: 439px;
         grid-area: post-3;
         grid-column: 3
     }
@@ -222,8 +417,8 @@
     }
 
     .post-6 {
-        width: 105px;
-        max-width: 105px;
+        width: 145px;
+        max-width: 145px;
         grid-area: post-6;
         grid-column: 6
     }
@@ -341,6 +536,197 @@
     }
     .table-products-items:last-child{
         border-bottom: none;
+    }
+    .coupon-system{
+        margin-top: 25px;
+    }
+    .coupon-system .title-coupon{
+        font-style: normal;
+        font-weight: bold;
+        font-size: 14px;
+        letter-spacing: -0.12px;
+        text-transform: uppercase;
+        color: #32405B;
+        margin: 14px 0;
+    }
+
+    .coupon-system > .coupon-system-form{
+        display: flex;
+    }
+    .coupon-enter{
+        background: #ECF0F3;
+        width: 100%;
+        padding: 11px 15px;
+        border: none;
+        margin-right: 20px;
+    }
+    .button-add-coupon{
+        background: #32405B;
+        padding: 10px 30px;
+        color: #FFFFFF;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 20px;
+        width: 160px;
+    }
+    .container-shipping{
+        box-shadow: 0px 6px 21px rgba(0, 0, 0, 0.15);
+        margin-bottom: 40px;
+    }
+    .shipping{
+        display: flex;
+        align-items: center;
+        background: #91A0BC;
+        width: 100%;
+        max-width: 100%;
+        margin-top: 20px;
+        padding: 10px 0;
+    }
+    .shipping div {
+        padding: 14px;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 14px;
+        letter-spacing: -0.12px;
+        text-transform: uppercase;
+        color: #FFFFFF;
+    }
+    .shipping input{
+        padding: 8px 15px;
+        padding-bottom: 7px;
+        margin-left: 20px;
+    }
+
+    .table{
+        display: flex;
+        grid-template-columns: repeat(6, 1fr);
+        background: #FFFFFF;
+        font-weight: bold;
+        font-size: 10px;
+        line-height: 0px;
+        letter-spacing: -0.0566328px;
+        color: #32405B;
+        padding: 17px 0;
+    }
+    .postt {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-right: 1px solid #D4D7DE;
+        width: calc(100% / 6);
+        color: #32405B;
+        font-weight: normal;
+        font-size: 10px;
+        line-height: 16px;
+        letter-spacing: -0.07px;
+    }
+
+    .postt:last-child{
+        border-right: none;
+    }
+    .styled-input-single label:before {
+        margin: 0;
+        margin-top: -3px;
+    }
+    .postt .image{
+        width: 100%;
+        height: 40px;
+        background-image: url("./../../assets/gruz.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        margin-bottom: 10px;
+    }
+    .postt .date{
+        width: 100%;
+        height: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #F3F6F8;
+    }
+    .postt .price{
+        display: flex;
+        justify-content: center;
+        align-items: center;margin-top: 10px;
+    }
+    .all-total{
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+    }
+    .button-continue-checkout{
+        width: 300px;
+        height: 20px;
+        padding: 10px 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #FFFFFF;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 20px;
+        background: #32405B;
+    }
+    .button-continue-checkout-back-image{
+        width: 20px;
+        height: 20px;
+        background-color: #CA4635;
+        background-image: url("./../../assets/back-arrow.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        padding: 10px;
+    }
+    .button-continue-checkout-back{
+        width: 200px;
+    }
+    .total-container{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        margin-bottom: 100px;
+    }
+    .total-container .total{
+        font-family: Montserrat;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 12px;
+        letter-spacing: -0.0566328px;
+        text-transform: uppercase;
+        color: #32405B;
+        margin-bottom: 20px;
+    }
+    .total-container .total span{
+        font-weight: bold;
+        font-size: 22px;
+        letter-spacing: -0.123562px;
+        text-transform: uppercase;
+        color: #CA4635;
+    }
+    .product-image{
+        width: 65px;
+        height: 53px;
+        padding: 0!important;
+        background-image: url("./../../assets/test_cart.png");
+    }
+    .product-container{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .key-delete{
+        display: flex;
+        justify-content: space-around;
+    }
+    .icon-delete{
+        width: 11px;
+        height: 11px;
+        background-image: url("./../../assets/close.svg");
+        background-repeat: no-repeat;
+        cursor: pointer;
+        background-position: center;
     }
 </style>
 

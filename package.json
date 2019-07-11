@@ -17,6 +17,7 @@
     "cookie-universal-nuxt": "^2.0.16",
     "nodejs-base64": "^1.0.3",
     "nuxt": "^2.0.0",
+    "vue-dropdowns": "^1.0.6",
     "vue-paginate": "^3.6.0",
     "vue-perfect-scrollbar": "^0.1.0",
     "vue-resource": "^1.5.1",
