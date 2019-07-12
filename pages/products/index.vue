@@ -150,7 +150,7 @@
     }
 </script>
 
-<style>
+<style scoped>
     .products {
         width: 100%;
         display: flex;

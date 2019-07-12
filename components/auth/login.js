@@ -63,6 +63,10 @@ export default {
                             name: 'token',
                             data: res.body.data.token
                         });
+                        const name = this.$router.history.current.name;
+                        if(name.indexOf('check-out') > -1 || name.indexOf('basket') > -1) {
+                            window.location.href = `/${name}`
+                        }
                         this.$router.push(`/account`)
                     }
                 });

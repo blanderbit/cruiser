@@ -16,7 +16,7 @@ export class CookieHelper {
                 data: basket
             });
         }
-
+        !data && (data = {token:params.store.getters['auth/get_user']});
         return isHeader && callback ?
             params.get && data? callback(data[params.get]) : callback() :
             new Promise(resolve => resolve("No action"))

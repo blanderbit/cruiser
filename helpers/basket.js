@@ -18,7 +18,8 @@ export class Basket {
         } catch (e){
             return null;
         }
-        return JSON.parse(cookie.parse(DOC && DOC.cookie || '')['basket-data'] || '[]')
+        const data = cookie.parse(DOC && DOC.cookie || '')['basket-data'];
+        return JSON.parse(data == 'undefined' ? '[]' : data || '[]')
     }
 
     deleteThing(index){

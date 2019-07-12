@@ -6,7 +6,7 @@
                     <span>Home</span> /
                     <span class="link-active"> Cart</span>
                 </div>
-                <div style="display: flex;" class="pointer" @click="$router.back()">
+                <div style="display: flex;" class="pointer" @click="$router.replace('products')">
                     <div class="button-continue-checkout-back-image"></div>
                     <div class="button-continue-checkout button-continue-checkout-back">Continue shoping</div>
                 </div>
@@ -203,6 +203,8 @@
     import {CookieHelper} from "../../helpers/cookie";
     import {Basket} from "../../helpers/basket";
     import Dropdown from "../../common/Dropdown";
+    import {Products} from "../../api/products";
+    import * as cookie from "cookie";
 
     export default {
         fetch({store,req}){
@@ -215,14 +217,83 @@
                 get: 'token'
             };
 
-            return CookieHelper.setCookieDataInStore(isHeader, options).then(res => console.log(res))
+            if(isHeader) {
+                const data = cookie.parse(req.headers.cookie);
+                const Token = data['token'];
+                const basket = data['basket-data'];
+                data['token'] && store.dispatch('cookie/action_cookie',{
+                    name: 'token',
+                    data: Token
+                });
+
+                data['basket-data'] && store.dispatch('cookie/action_cookie',{
+                    name: 'basket',
+                    data: basket
+                });
+            }
+
+
+            const BASKET = new Basket(store);
+            let items = BASKET.getAllThing() || store.getters['cookie/getAllThing'];
+            if(items && items != 'undefined'){
+                items = (items && typeof items == 'string' ? JSON.parse(items) : items) || []
+            } else {
+                items = []
+            }
+
+            return CookieHelper.setCookieDataInStore(isHeader, options)
+                .then(() => {
+                    const newArray = JSON.parse(JSON.stringify(items));
+                    let arrayHash = newArray
+                        .map(item => (item.basket && item.basket.unique_hashes) || item.unique_hash)
+                        .filter(item => item);
+                    return Products.getAvailableProductsInBasket(arrayHash)
+                })
+                .then(res => {
+                    const data = res.body;
+                    const dataDayFormat = (data) => {
+                        if(!data) return '';
+                        const statics = data;
+                        const regex = /\d+/g;
+                        data && (data = data.match(regex));
+                        data && (data = data[data.length - 1]);
+                        if (data && data.indexOf(1) > -1) return `${statics} day`;
+                        return `${statics} days`;
+                    };
+                    items = items.map(item => {
+                        const find = data
+                            .find(prod => {
+                                let hash = ((item.basket && item.basket.unique_hashes) || item.unique_hash);
+                                return hash === prod.unique_hash
+                            });
+                        if(!find) return item;
+                        Object.keys(item).forEach(key => {
+                            `${item[key]}` && `${find[key]}` && (item[key] == find[key])
+                            const regex = /\d+/g;
+                            const warehouses = item.warehouses ? item.warehouses.split(' ') : [];
+                            item.basket.warehousesNumber = warehouses[0] && warehouses[0].match(regex);
+                            item.basket.prices = item.price || item.basket.prices;
+                            item.basket.available = item.qty || item.basket.available ;
+                            item.basket.warehousesNumber = !item.basket.warehousesNumber ?
+                                1 : item.basket.warehousesNumber[0];
+                            !item.basket.warehousesDay && (item.basketwarehousesDay = dataDayFormat(warehouses[1]));
+                        })
+                        return item
+                    });
+                    store.dispatch('cookie/action_cookie',{
+                        name: 'basket',
+                        data: items
+                    });
+                    return {afterRequest: items}
+                })
+                .catch(res => console.log(res))
         },
+
         components: {
             'dropdown': Dropdown,
         },
         data() {
             return {
-                langs: ['JavaScript', 'PHP', 'HTML', 'CSS', 'Ruby', 'Python', 'Erlang'],
                 BASKET: new Basket(this.$store),
                 items:[],
                 arrayOfObjects: [{name:'2'}, {name:'3'},{name: '4'}],
@@ -238,8 +309,13 @@
             }
         },
 
+
         created(){
             this.items = this.getItems()
+        },
+
+        mounted(){
+            this.BASKET.setAllData(this.$store.getters['cookie/getAllThing'])
         },
 
         computed: {
@@ -263,6 +339,7 @@
             },
 
             sum(items, type){
+                if(items.length == 0) return 0;
                 return JSON.parse(JSON.stringify(items))
                     .map(item => type ? (+item.basket.prices * item.basket.qty ): item.basket.qty)
                     .reduce((a,b) => a + b)
@@ -321,7 +398,7 @@
     }
 </script>
 
-<style>
+<style scoped>
     .products {
         width: 100%;
         display: flex;
@@ -331,8 +408,6 @@
     .products-container {
         width: 1100px;
     }
-
-
 
     .table-products {
         display: grid;
@@ -347,13 +422,16 @@
     .table-products-header {
           margin-bottom: 4px;
           background: #FFFFFF;
-      }
+    }
+
     .table-products-header .post{
         border-right: 1px solid #ECF0F3;
     }
+
     .table-products:hover{
         background: #e4e5e6!important;
     }
+
     .post {
         /*height: 30px;*/
         border-right: 1px solid #FFFFFF;
@@ -365,9 +443,11 @@
         white-space: nowrap;
         overflow: hidden;
     }
+
     .table-products-items{
         margin-bottom: 1px;
     }
+
     .table-products-items .post {
         /*height: 40px;*/
     }
@@ -510,13 +590,15 @@
         text-transform: uppercase;
         color: #32405B;
 
-     }
+    }
+
     .item-qty{
         display: flex;
         align-items: center;
         justify-content: center;
         padding: 6px 12px!important;
     }
+
     .item-shop-basket-count{
         width: 20px;
         height: 20px;
@@ -525,21 +607,27 @@
         background: white;
         color: #32405B
     }
+
     .quantity{
         margin: 0 12px;
     }
+
     .table-products-items .post{
         border-right: #ECF0F3;
     }
+
     .table-products-items{
         border-bottom: 2px solid #FFFFFF;
     }
+
     .table-products-items:last-child{
         border-bottom: none;
     }
+
     .coupon-system{
         margin-top: 25px;
     }
+
     .coupon-system .title-coupon{
         font-style: normal;
         font-weight: bold;
@@ -553,6 +641,7 @@
     .coupon-system > .coupon-system-form{
         display: flex;
     }
+
     .coupon-enter{
         background: #ECF0F3;
         width: 100%;
@@ -560,6 +649,7 @@
         border: none;
         margin-right: 20px;
     }
+
     .button-add-coupon{
         background: #32405B;
         padding: 10px 30px;
@@ -570,10 +660,12 @@
         line-height: 20px;
         width: 160px;
     }
+
     .container-shipping{
         box-shadow: 0px 6px 21px rgba(0, 0, 0, 0.15);
         margin-bottom: 40px;
     }
+
     .shipping{
         display: flex;
         align-items: center;
@@ -583,6 +675,7 @@
         margin-top: 20px;
         padding: 10px 0;
     }
+
     .shipping div {
         padding: 14px;
         font-style: normal;
@@ -592,6 +685,7 @@
         text-transform: uppercase;
         color: #FFFFFF;
     }
+
     .shipping input{
         padding: 8px 15px;
         padding-bottom: 7px;
