@@ -66,7 +66,7 @@
                         </div>
                     </div>
                     <div class="post post-6 product-container key-delete">
-                        <div class="item">{{subtotal(item.basket && item.basket.unique_hashes)}}</div>
+                        <div class="item">{{subtotal(item.basket && item.basket.unique_hashes).toFixed(2)}}</div>
                         <div class="icon-delete" @click="deleteThingsInBasket(index)"></div>
                     </div>
                 </div>
@@ -74,7 +74,7 @@
             <div class="products-all-header products-all-total">
                 <div style="display: flex">
                     <div class="post-5" style="border-right: 2px solid white; width: 70px">{{getTotalQty}}pcs</div>
-                    <div class="post-6" style="width: 125px;">${{getTotalPrice}}</div>
+                    <div class="post-6" style="width: 125px;">${{getTotalPrice.toFixed(2)}}</div>
                 </div>
             </div>
             <div class="coupon-system">
@@ -191,7 +191,7 @@
             <div style="background: #DADADA;width: 100%;height: 1px; margin-bottom: 20px"></div>
             <div class="all-total">
                 <div class="total-container">
-                    <div class="total">total:<span>${{getTotalPrice}}</span></div>
+                    <div class="total">total:<span>${{getTotalPrice.toFixed(2)}}</span></div>
                     <div class="button-continue-checkout pointer"  @click="$router.push('check-out')">continue to checkout</div>
                 </div>
             </div>

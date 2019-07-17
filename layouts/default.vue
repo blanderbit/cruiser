@@ -541,7 +541,15 @@
         padding: 0 0 7px 25px;
         text-align: left;
         margin-bottom: 23px;
+        label.active {
+            &:before {
+            }
 
+            &:after {
+                transform: translate3d(0, 0, 0);
+                opacity: 1;
+            }
+        }
         label {
             cursor: pointer;
             margin: 0;
@@ -644,6 +652,15 @@
             &:checked + label {
                 &:after {
                     transform: rotate(45deg);
+                    opacity: 1;
+                }
+            }
+            label.active{
+                &:before {
+                }
+
+                &:after {
+                    transform: translate3d(0, 0, 0);
                     opacity: 1;
                 }
             }

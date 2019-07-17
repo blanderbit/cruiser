@@ -91,8 +91,7 @@
                 this[type] = index
             },
             isAutorize() {
-
-                if(!this.TOKEN.getToken()) {console.log(1233)
+                if(!this.TOKEN.getToken()) {
                     this.$store.dispatch('cookie/action_cookie',{
                             name: 'token',
                             data: null

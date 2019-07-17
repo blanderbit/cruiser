@@ -12,32 +12,8 @@ export class Products {
     }
 
 
-   static staticgetCareer(){
-        const fromAddress = {
-            'object_purpose' : 'PURCHASE',
-            'name' : 'Shawn Ippotle',
-            'company' : 'Shippo',
-            'street1' : '215 Clayton St.',
-            'city' :  'San Francisco',
-            'state' : 'CA',
-            'zip' : '94117',
-            'country' : 'US',
-            'phone'  :  '+1 555 341 9393',
-            'email' :  'shippotle@goshippo.com'
-        };
-        const toAddress = {
-            'object_purpose': 'PURCHASE',
-            'name': 'Mr Hippo"',
-            'company': '',
-            'street1': 'Broadway 1',
-            'street2': '',
-            'city': 'New York',
-            'state': 'NY',
-            'zip': '10007',
-            'country': 'US',
-            'phone': '+1 555 341 9393',
-            'email': 'mrhippo@goshippo.com'
-        };
+   static staticgetCareer(user, data){
+        let packeges = JSON.parse(JSON.stringify(data))
         const parcel = {
             'length': '5',
             'width': '5',
@@ -45,11 +21,18 @@ export class Products {
             'distance_unit': 'in',
             'weight': '2',
             'mass_unit':'lb',
-        }
+        };
+       packeges = packeges.map(item => {
+           return {
+               'length': 1,
+               'width': 1,
+               'height': 1,
+               'weight': item.basket.weight_physical,
+           };
+       });
        return Vue.http.post(`api/shipping-rates`, {
-           fromAddress,
-           toAddress,
-           parcel
+           user: user,
+           packages: packeges
        })
 
     }

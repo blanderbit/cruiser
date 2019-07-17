@@ -1,4 +1,5 @@
 import {Basket} from "../../../helpers/basket";
+import {Token} from "../../../helpers/token";
 
 export default {
     name: 'basket',
@@ -8,7 +9,8 @@ export default {
         return {
             data: [],
             total: 0,
-            BASKET: new Basket(this.$store)
+            BASKET: new Basket(this.$store),
+            TOKEN: new Token(this.$store)
         }
     },
     created() {
@@ -72,6 +74,7 @@ export default {
             });
             this.$emit('refresh', true)
         },
+
 
         toRouter(data) {
             this.$router.push(`/products/${data.url}`)

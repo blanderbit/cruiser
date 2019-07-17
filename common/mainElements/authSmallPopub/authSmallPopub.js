@@ -52,6 +52,10 @@ export default {
             });
             this.TOKEN.deleteToken();
             this.$emit('closeSmallPopub', false);
+            this.$store.dispatch('auth/actionValue',{
+                name:'userData',
+                data:{}
+            });
             this.$router.push('/');
         }
     },
