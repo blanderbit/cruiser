@@ -674,14 +674,14 @@
                     );
                 });
 
-                let error_boolean = !error.email.errors ||
-                    !error.last_name.errors ||
-                    !error.street_address.errors ||
-                    !error.street_address_two.errors ||
-                    !error.city.errors ||
-                    !error.state.errors ||
-                    !error.postal_code.errors ||
-                    !error.country.errors ||
+                let error_boolean = !error.email.errors &&
+                    !error.last_name.errors &&
+                    !error.street_address.errors &&
+                    !error.street_address_two.errors &&
+                    !error.city.errors &&
+                    !error.state.errors &&
+                    !error.postal_code.errors &&
+                    !error.country.errors &&
                     !error.phone.errors;
 
                 if(this.payment.paypal && error_boolean){
@@ -694,6 +694,7 @@
                             same_address: this.addressSame
                         }
                     };
+                    this.errorRegister = {};
                     let url_data = `http://cruiser-webstore-back.qbex.io/paypal?result=${base64encode(JSON.stringify(obj))}&amount=${this.getTotalPrice}`;
                     window.location.href = url_data;
                 } else {
@@ -776,20 +777,21 @@
                     );
                 });
 
-                let error_boolean = !error.email.errors ||
-                    !error.last_name.errors ||
-                    !error.street_address.errors ||
-                    !error.street_address_two.errors ||
-                    !error.city.errors ||
-                    !error.state.errors ||
-                    !error.postal_code.errors ||
-                    !error.country.errors ||
+                let error_boolean = !error.email.errors &&
+                    !error.last_name.errors &&
+                    !error.street_address.errors &&
+                    !error.street_address_two.errors &&
+                    !error.city.errors &&
+                    !error.state.errors &&
+                    !error.postal_code.errors&&
+                    !error.country.errors &&
                     !error.phone.errors;
 
                 if(error_boolean){
                     this.toStore('error', 'Wait ...');
                     Products.staticgetCareer(this.dataRegister, this.items)
                         .then(res=> {
+                            this.errorRegister = {};
                             let data = res.body.rates.sort(() => Math.random() - 0.5).splice(0,5);
 
                             Object.keys(this.data).forEach((item, index) => {
